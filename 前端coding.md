@@ -257,3 +257,19 @@ console.log(xm.age) // 12
 xm.eat() // xiaoming is eating
 ```
 
+### 7、数组排序
+
+#### sort 排序
+
+```
+// 对数字进行排序，简写
+const arr = [3, 2, 4, 1, 5]
+arr.sort((a, b) => a - b)
+console.log(arr) // [1, 2, 3, 4, 5]
+
+// 对字母进行排序，简写
+const arr = ['b', 'c', 'a', 'e', 'd']
+arr.sort()
+console.log(arr) // ['a', 'b', 'c', 'd', 'e']
+```
+
