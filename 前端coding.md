@@ -273,3 +273,128 @@ arr.sort()
 console.log(arr) // ['a', 'b', 'c', 'd', 'e']
 ```
 
+#### 冒泡排序
+
+```
+function bubbleSort(arr) {
+  let len = arr.length
+  for (let i = 0; i < len - 1; i++) {
+    // 从第一个元素开始，比较相邻的两个元素，前者大就交换位置
+    for (let j = 0; j < len - 1 - i; j++) {
+      if (arr[j] > arr[j + 1]) {
+        let num = arr[j]
+        arr[j] = arr[j + 1]
+        arr[j + 1] = num
+      }
+    }
+    // 每次遍历结束，都能找到一个最大值，放在数组最后
+  }
+  return arr
+}
+
+//测试
+console.log(bubbleSort([2, 3, 1, 5, 4])) // [1, 2, 3, 4, 5]
+```
+
+### 8、数组去重
+
+#### Set 去重
+
+```
+const newArr = [...new Set(arr)]
+// 或
+const newArr = Array.from(new Set(arr))
+```
+
+#### indexOf 去重
+
+```
+const newArr = arr.filter((item, index) => arr.indexOf(item) === index)
+```
+
+### 9、获取 url 参数
+
+#### URLSearchParams 方法
+
+```
+// 创建一个URLSearchParams实例
+const urlSearchParams = new URLSearchParams(window.location.search);
+// 把键值对列表转换为一个对象
+const params = Object.fromEntries(urlSearchParams.entries());
+```
+
+#### split 方法
+
+```
+function getParams(url) {
+  const res = {}
+  if (url.includes('?')) {
+    const str = url.split('?')[1]
+    const arr = str.split('&')
+    arr.forEach(item => {
+      const key = item.split('=')[0]
+      const val = item.split('=')[1]
+      res[key] = decodeURIComponent(val) // 解码
+    })
+  }
+  return res
+}
+
+// 测试
+const user = getParams('http://www.baidu.com?user=%E9%98%BF%E9%A3%9E&age=16')
+console.log(user) // { user: '阿飞', age: '16' }
+```
+
+### 10、发布订阅模式
+
+```
+class EventEmitter {
+  constructor() {
+    this.cache = {}
+  }
+
+  on(name, fn) {
+    if (this.cache[name]) {
+      this.cache[name].push(fn)
+    } else {
+      this.cache[name] = [fn]
+    }
+  }
+
+  off(name, fn) {
+    const tasks = this.cache[name]
+    if (tasks) {
+      const index = tasks.findIndex((f) => f === fn || f.callback === fn)
+      if (index >= 0) {
+        tasks.splice(index, 1)
+      }
+    }
+  }
+
+  emit(name, once = false) {
+    if (this.cache[name]) {
+      // 创建副本，如果回调函数内继续注册相同事件，会造成死循环
+      const tasks = this.cache[name].slice()
+      for (let fn of tasks) {
+        fn();
+      }
+      if (once) {
+        delete this.cache[name]
+      }
+    }
+  }
+}
+
+// 测试
+const eventBus = new EventEmitter()
+const task1 = () => { console.log('task1'); }
+const task2 = () => { console.log('task2'); }
+
+eventBus.on('task', task1)
+eventBus.on('task', task2)
+eventBus.off('task', task1)
+setTimeout(() => {
+  eventBus.emit('task') // task2
+}, 1000)
+```
+
