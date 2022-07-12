@@ -19,3 +19,52 @@
 ```
 2 <= n <= 100000
 ```
+
+哈希表
+
+python
+
+```
+class Solution:
+    def findRepeatNumber(self, nums: [int]) -> int:
+        dic = set()
+        for num in nums:
+            if num in dic: return num
+            dic.add(num)
+        return -1
+```
+
+js
+
+```
+var findRepeatNumber = function(nums) {
+    const map = new Map()
+    for (const num of nums) {
+        const val = map.get(num)
+        if (map.has(num)) {
+            map.set(num, val + 1)
+        } else {
+            map.set(num, 1)
+        }
+    }
+    for (const [key, val] of map) {
+        if (val > 1) {
+            return key
+        }
+    }
+};
+
+一次循环
+
+var findRepeatNumber = function(nums) {
+    const map = new Map()
+    for (const num of nums) {
+        const val = map.get(num)
+        if (map.has(num)) {
+            return num
+        }
+        map.set(num, 1)
+    }
+};
+```
+
