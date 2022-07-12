@@ -136,3 +136,50 @@ var findNumberIn2DArray = function(matrix, target) {
 };
 ```
 
+#### [剑指 Offer 05. 替换空格](https://leetcode.cn/problems/ti-huan-kong-ge-lcof/)
+
+请实现一个函数，把字符串 `s` 中的每个空格替换成"%20"。
+
+**示例 1：**
+
+```
+输入：s = "We are happy."
+输出："We%20are%20happy." 
+```
+
+**限制：**
+
+```
+0 <= s 的长度 <= 10000
+```
+
+python
+
+```
+class Solution:
+    def replaceSpace(self, s: str) -> str:
+        res = []
+        for c in s:
+            if c == ' ': res.append("%20")
+            else: res.append(c)
+        return "".join(res)
+```
+
+js
+
+解法1 replace+正则
+
+```
+var replaceSpace = function(s) {
+      return s.replace(/ /g, "%20");
+};
+```
+
+解法2 split+join
+
+```
+var replaceSpace = function(s) {
+      return s.split(" ").join("%20");
+};
+```
+
