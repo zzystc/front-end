@@ -233,13 +233,24 @@ js
 栈方法
 
 ```
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {number[]}
+ */
 var reversePrint = function(head) {
-    if(!head) return []
-    let arr = [];
-    while(head){
+    if (! head) return []
+    let arr = []
+    while (head){
         arr.push(head.val);
-        head = head.next;
-    }
+        head = head.next
+    } 
     return arr.reverse()
 };
 ```
@@ -252,6 +263,179 @@ var reversePrint = function (head) {
     let result = reversePrint(head.next)
     result.push(head.val);
     return result
+};
+```
+
+#### [剑指 Offer 07. 重建二叉树](https://leetcode.cn/problems/zhong-jian-er-cha-shu-lcof/)
+
+输入某二叉树的前序遍历和中序遍历的结果，请构建该二叉树并返回其根节点。
+
+假设输入的前序遍历和中序遍历的结果中都不含重复的数字。
+
+**示例 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/02/19/tree.jpg)
+
+```
+Input: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+Output: [3,9,20,null,null,15,7]
+```
+
+**示例 2:**
+
+```
+Input: preorder = [-1], inorder = [-1]
+Output: [-1]
+```
+
+**限制：**
+
+```
+0 <= 节点个数 <= 5000
+```
+
+**注意**：本题与主站 105 题重复：https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+
+py
+
+```
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        def myBuildTree(preorder_left: int, preorder_right: int, inorder_left: int, inorder_right: int):
+            if preorder_left > preorder_right:
+                return None
+            
+            # 前序遍历中的第一个节点就是根节点
+            preorder_root = preorder_left
+            # 在中序遍历中定位根节点
+            inorder_root = index[preorder[preorder_root]]
+            
+            # 先把根节点建立出来
+            root = TreeNode(preorder[preorder_root])
+            # 得到左子树中的节点数目
+            size_left_subtree = inorder_root - inorder_left
+            # 递归地构造左子树，并连接到根节点
+            # 先序遍历中「从 左边界+1 开始的 size_left_subtree」个元素就对应了中序遍历中「从 左边界 开始到 根节点定位-1」的元素
+            root.left = myBuildTree(preorder_left + 1, preorder_left + size_left_subtree, inorder_left, inorder_root - 1)
+            # 递归地构造右子树，并连接到根节点
+            # 先序遍历中「从 左边界+1+左子树节点数目 开始到 右边界」的元素就对应了中序遍历中「从 根节点定位+1 到 右边界」的元素
+            root.right = myBuildTree(preorder_left + size_left_subtree + 1, preorder_right, inorder_root + 1, inorder_right)
+            return root
+        
+        n = len(preorder)
+        # 构造哈希映射，帮助我们快速定位根节点
+        index = {element: i for i, element in enumerate(inorder)}
+        return myBuildTree(0, n - 1, 0, n - 1)
+```
+
+js
+
+```
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {number[]} preorder
+ * @param {number[]} inorder
+ * @return {TreeNode}
+ */
+var buildTree = function(preorder, inorder) {
+    if (preorder.length === 0 || inorder.length === 0) {
+        return null
+    }
+    const index = inorder.findIndex(item => item === preorder[0])
+    const left = inorder.slice(0, index)
+    const right = inorder.slice(index + 1)
+    return {
+        val : preorder[0],
+        left : buildTree(preorder.slice(1, index + 1), left),
+        right : buildTree(preorder.slice(index + 1), right)
+    }
+};
+```
+
+#### [剑指 Offer 09. 用两个栈实现队列](https://leetcode.cn/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/)
+
+用两个栈实现一个队列。队列的声明如下，请实现它的两个函数 `appendTail` 和 `deleteHead` ，分别完成在队列尾部插入整数和在队列头部删除整数的功能。(若队列中没有元素，`deleteHead` 操作返回 -1 )
+
+**示例 1：**
+
+```
+输入：
+["CQueue","appendTail","deleteHead","deleteHead"]
+[[],[3],[],[]]
+输出：[null,null,3,-1]
+```
+
+**示例 2：**
+
+```
+输入：
+["CQueue","deleteHead","appendTail","appendTail","deleteHead","deleteHead"]
+[[],[],[5],[2],[],[]]
+输出：[null,-1,null,null,5,2]
+```
+
+**提示：**
+
+-   `1 <= values <= 10000`
+-   `最多会对 appendTail、deleteHead 进行 10000 次调用`
+
+py
+
+```
+class CQueue:
+    def __init__(self):
+        self.A, self.B = [], []
+
+    def appendTail(self, value: int) -> None:
+        self.A.append(value)
+
+    def deleteHead(self) -> int:
+        if self.B: return self.B.pop()
+        if not self.A: return -1
+        while self.A:
+            self.B.append(self.A.pop())
+        return self.B.pop()
+```
+
+js
+
+```
+var CQueue = function() {
+    this.inStack = [];
+    this.outStack = [];
+};
+
+CQueue.prototype.appendTail = function(value) {
+    this.inStack.push(value);
+};
+
+CQueue.prototype.deleteHead = function() {
+    if (!this.outStack.length) {
+        if (!this.inStack.length) {
+            return -1;
+        }
+        this.in2out();
+    }
+    return this.outStack.pop();
+};
+
+CQueue.prototype.in2out = function() {
+    while (this.inStack.length) {
+        this.outStack.push(this.inStack.pop());
+    }
 };
 ```
 
