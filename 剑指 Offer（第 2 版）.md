@@ -183,3 +183,75 @@ var replaceSpace = function(s) {
 };
 ```
 
+#### [剑指 Offer 06. 从尾到头打印链表](https://leetcode.cn/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/)
+
+输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）。
+
+**示例 1：**
+
+```
+输入：head = [1,3,2]
+输出：[2,3,1]
+```
+
+**限制：**
+
+```
+0 <= 链表长度 <= 10000
+```
+
+py
+
+##### 方法一：递归法
+
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def reversePrint(self, head: ListNode) -> List[int]:
+        return self.reversePrint(head.next) + [head.val] if head else []
+```
+
+##### 方法二：辅助栈法
+
+```
+class Solution:
+    def reversePrint(self, head: ListNode) -> List[int]:
+        stack = []
+        while head:
+            stack.append(head.val)
+            head = head.next
+        return stack[::-1]
+```
+
+js
+
+栈方法
+
+```
+var reversePrint = function(head) {
+    if(!head) return []
+    let arr = [];
+    while(head){
+        arr.push(head.val);
+        head = head.next;
+    }
+    return arr.reverse()
+};
+```
+
+递归方法
+
+```
+var reversePrint = function (head) {
+    if(!head) return []
+    let result = reversePrint(head.next)
+    result.push(head.val);
+    return result
+};
+```
+
