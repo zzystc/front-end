@@ -473,21 +473,17 @@ F(N) = F(N - 1) + F(N - 2), 其中 N > 1.
 py
 
 ```
-class Solution {
-    public int fib(int n) {
-        final int MOD = 1000000007;
-        if (n < 2) {
-            return n;
-        }
-        int p = 0, q = 0, r = 1;
-        for (int i = 2; i <= n; ++i) {
-            p = q; 
-            q = r; 
-            r = (p + q) % MOD;
-        }
-        return r;
-    }
-}
+class Solution:
+    def fib(self, n: int) -> int:
+        MOD = 10 ** 9 + 7
+        if n < 2:
+            return n
+        p, q, r = 0, 0, 1
+        for i in range(2, n + 1):
+            p = q
+            q = r
+            r = (p + q) % MOD
+        return r
 
 log n:
 class Solution:
