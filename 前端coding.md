@@ -1,3 +1,99 @@
+# 前端面试手撕题
+
+### FED1 事件委托
+
+#### 描述
+
+描述请补全JavaScript代码，要求如下：
+\1. 给"ul"标签添加点击事件
+\2. 当点击某"li"标签时，该标签内容拼接"."符号。如：某"li"标签被点击时，该标签内容为".."
+注意：
+\1. 必须使用DOM0级标准事件（onclick）
+
+核心： 区别target和currentTarget
+
+- target表示`当前触发事件`的元素
+- currentTarget是`绑定处理函数的元素`
+
+> 只有当事件处理函数绑定在自身的时候，target才会和currentTarget一样
+
+题目要求使用事件代理，也即是不要在自身绑定`onclick`,我们可以选择它的父元素`ul`
+
+完整代码如下:
+
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset=utf-8>
+    </head>
+    <body>
+    	<ul>
+            <li>.</li>
+            <li>.</li>
+            <li>.</li>
+        </ul>
+
+        <script type="text/javascript">
+            // 补全代码
+            document.querySelector('ul').onclick = function(e) {
+                e.target.innerText += '.'
+            }
+            
+        </script>
+    </body>
+</html>
+```
+
+### **FED2** **数组去重**
+
+#### 描述
+
+请补全JavaScript代码，要求去除数组参数中的重复数字项并返回该数组。
+注意：
+\1. 数组元素仅包含数字
+
+#### 示例1
+
+```html
+输入：
+_deleteRepeat([-1,1,2,2])
+
+输出：
+[-1,1,2]
+```
+
+**本题考点**：去除数组重复项
+
+根据题目要求，去除数组中的重复项。数组去重的方式有多种，如ES6的Set对象等可实现快速去重。该处使用循环判断完成数组的去重，核心步骤有：
+
+1. 进入参数数组长度的循环体中
+2. 取“i”位数值再截取“i”位之后的数组
+3. 判断截取的数组中是否有某一位和第“i”位相同
+4. 如果有，则将数组最后一位和第“i”位进行替换并且数组长度减1
+5. 如果没有，则进入下一次循环
+
+**参考答案**：
+
+```html
+const _deleteRepeat = array => {
+    for(let i=0 ; i<array.length ; i++) {
+        const sign = array[i]
+        const temArray = array.slice(i+1)
+        if(temArray.indexOf(sign) > -1) {
+            array[i] = array[array.length-1]
+            array.length--
+            i--
+        }
+    }
+    return array
+}
+```
+
+
+
+
+
 # 前端coding
 
 ## [10个常见的前端手写功能，你全都会吗？](https://juejin.cn/post/7031322059414175774#heading-6)
