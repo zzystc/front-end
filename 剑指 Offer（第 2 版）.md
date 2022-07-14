@@ -690,3 +690,915 @@ var minArray = function(numbers) {
 };
 ```
 
+#### [剑指 Offer 12. 矩阵中的路径](https://leetcode.cn/problems/ju-zhen-zhong-de-lu-jing-lcof/)
+
+给定一个 `m x n` 二维字符网格 `board` 和一个字符串单词 `word` 。如果 `word` 存在于网格中，返回 `true` ；否则，返回 `false` 。
+
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+
+例如，在下面的 3×4 的矩阵中包含单词 "ABCCED"（单词中的字母已标出）。
+
+![img](https://assets.leetcode.com/uploads/2020/11/04/word2.jpg)
+
+**示例 1：**
+
+```
+输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
+输出：true
+```
+
+**示例 2：**
+
+```
+输入：board = [["a","b"],["c","d"]], word = "abcd"
+输出：false
+```
+
+**提示：**
+
+-   `1 <= board.length <= 200`
+-   `1 <= board[i].length <= 200`
+-   `board` 和 `word` 仅由大小写英文字母组成
+
+**注意：**本题与主站 79 题相同：https://leetcode-cn.com/problems/word-search/
+
+py
+
+```
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
+        def check(i: int, j: int, k: int) -> bool:
+            if board[i][j] != word[k]:
+                return False
+            if k == len(word) - 1:
+                return True
+            
+            visited.add((i, j))
+            result = False
+            for di, dj in directions:
+                newi, newj = i + di, j + dj
+                if 0 <= newi < len(board) and 0 <= newj < len(board[0]):
+                    if (newi, newj) not in visited:
+                        if check(newi, newj, k + 1):
+                            result = True
+                            break
+            
+            visited.remove((i, j))
+            return result
+
+        h, w = len(board), len(board[0])
+        visited = set()
+        for i in range(h):
+            for j in range(w):
+                if check(i, j, 0):
+                    return True
+        
+        return False
+```
+
+js
+
+```
+var exist = function(board, word) {
+    const h = board.length, w = board[0].length;
+    const directions = [[0, 1], [0, -1], [1, 0], [-1, 0]];
+    const visited = new Array(h);
+    for (let i = 0; i < visited.length; ++i) {
+        visited[i] = new Array(w).fill(false);
+    }
+    const check = (i, j, s, k) => {
+        if (board[i][j] != s.charAt(k)) {
+            return false;
+        } else if (k == s.length - 1) {
+            return true;
+        }
+        visited[i][j] = true;
+        let result = false;
+        for (const [dx, dy] of directions) {
+            let newi = i + dx, newj = j + dy;
+            if (newi >= 0 && newi < h && newj >= 0 && newj < w) {
+                if (!visited[newi][newj]) {
+                    const flag = check(newi, newj, s, k + 1);
+                    if (flag) {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+        }
+        visited[i][j] = false;
+        return result;
+    }
+
+    for (let i = 0; i < h; i++) {
+        for (let j = 0; j < w; j++) {
+            const flag = check(i, j, word, 0);
+            if (flag) {
+                return true;
+            }
+        }
+    }
+    return false;
+};
+```
+
+#### [剑指 Offer 13. 机器人的运动范围](https://leetcode.cn/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/)
+
+地上有一个m行n列的方格，从坐标 `[0,0]` 到坐标 `[m-1,n-1]` 。一个机器人从坐标 `[0, 0] `的格子开始移动，它每次可以向左、右、上、下移动一格（不能移动到方格外），也不能进入行坐标和列坐标的数位之和大于k的格子。例如，当k为18时，机器人能够进入方格 [35, 37] ，因为3+5+3+7=18。但它不能进入方格 [35, 38]，因为3+5+3+8=19。请问该机器人能够到达多少个格子？
+
+**示例 1：**
+
+```
+输入：m = 2, n = 3, k = 1
+输出：3
+```
+
+**示例 2：**
+
+```
+输入：m = 3, n = 1, k = 0
+输出：1
+```
+
+**提示：**
+
+-   `1 <= n,m <= 100`
+-   `0 <= k <= 20`
+
+##### 方法一：广度优先搜索
+
+py
+
+```
+def digitsum(n):
+    ans = 0
+    while n:
+        ans += n % 10
+        n //= 10
+    return ans
+
+class Solution:
+    def movingCount(self, m: int, n: int, k: int) -> int:
+        from queue import Queue
+        q = Queue()
+        q.put((0, 0))
+        s = set()
+        while not q.empty():
+            x, y = q.get()
+            if (x, y) not in s and 0 <= x < m and 0 <= y < n and digitsum(x) + digitsum(y) <= k:
+                s.add((x, y))
+                for nx, ny in [(x + 1, y), (x, y + 1)]:
+                    q.put((nx, ny))
+        return len(s)
+```
+
+js
+
+```
+var movingCount = function(m, n, k) {
+    const queue = [[0, 0]];
+    let res = 0, i = 1;
+    const isVisited = {};
+    while(i) {
+        while(i--) {
+            const [i, j] = queue.shift();
+            const key = i + '-' + j;
+            if (i >= m || j >= n || isVisited[key] || ('' + i + j).split('').reduce((t, i) => t + +i, 0) > k) continue;
+            res++;
+            isVisited[key] = true;
+            queue.push([i + 1, j], [i, j + 1])
+        }
+        i = queue.length;
+    }
+    return res;
+};
+```
+
+##### 方法二：递推
+
+```
+def digitsum(n):
+    ans = 0
+    while n:
+        ans += n % 10
+        n //= 10
+    return ans
+
+class Solution:
+    def movingCount(self, m: int, n: int, k: int) -> int:
+        vis = set([(0, 0)])
+        for i in range(m):
+            for j in range(n):
+                if ((i - 1, j) in vis or (i, j - 1) in vis) and digitsum(i) + digitsum(j) <= k:
+                    vis.add((i, j))
+        return len(vis)
+```
+
+#### [剑指 Offer 14- I. 剪绳子](https://leetcode.cn/problems/jian-sheng-zi-lcof/)
+
+给你一根长度为 `n` 的绳子，请把绳子剪成整数长度的 `m` 段（m、n都是整数，n>1并且m>1），每段绳子的长度记为 `k[0],k[1]...k[m-1]` 。请问 `k[0]*k[1]*...*k[m-1]` 可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。
+
+**示例 1：**
+
+```
+输入: 2
+输出: 1
+解释: 2 = 1 + 1, 1 × 1 = 1
+```
+
+**示例 2:**
+
+```
+输入: 10
+输出: 36
+解释: 10 = 3 + 3 + 4, 3 × 3 × 4 = 36
+```
+
+**提示：**
+
+-   `2 <= n <= 58`
+
+注意：本题与主站 343 题相同：https://leetcode-cn.com/problems/integer-break/
+
+py
+
+```
+class Solution:
+    def cuttingRope(self, n: int) -> int:
+        if n <= 3: return n - 1
+        a, b = n // 3, n % 3
+        if b == 0: return int(math.pow(3, a))
+        if b == 1: return int(math.pow(3, a - 1) * 4)
+        return int(math.pow(3, a) * 2)
+```
+
+js
+
+```
+var cuttingRope = function (n) {
+    // 记忆化：哈希表存储计算结果，避免重复计算，预先放入 n = 2 和 3 的结果
+    let hashMap = new Map([[2, 1], [3, 2]])
+    const recordN = (n) => {
+        // 已有结果直接返回结果
+        if (hashMap.has(n)) {
+            return hashMap.get(n);
+        } else {
+            let res = -1;
+            // 长度为 n 剪一刀，接下来可以选择继续剪或不剪
+            // 剪一刀长度为 i 时，此时最大值为 Max(i * (n - i), i * recordN(n - i))
+            // recordN(n) 记录的是长度为 n 时的所有情况，所以需要使用 res 累计比较
+            for (let i = 1; i < n; i++) {
+                res = Math.max(res, i * (n - i), i * recordN(n - i));
+            }
+            hashMap.set(n, res);
+            return res
+        }
+    }
+    return recordN(n)
+};
+```
+
+#### [剑指 Offer 14- II. 剪绳子 II](https://leetcode.cn/problems/jian-sheng-zi-ii-lcof/)
+
+给你一根长度为 `n` 的绳子，请把绳子剪成整数长度的 `m` 段（m、n都是整数，n>1并且m>1），每段绳子的长度记为 `k[0],k[1]...k[m - 1]` 。请问 `k[0]*k[1]*...*k[m - 1]` 可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。
+
+答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+
+**示例 1：**
+
+```
+输入: 2
+输出: 1
+解释: 2 = 1 + 1, 1 × 1 = 1
+```
+
+**示例 2:**
+
+```
+输入: 10
+输出: 36
+解释: 10 = 3 + 3 + 4, 3 × 3 × 4 = 36
+```
+
+**提示：**
+
+-   `2 <= n <= 1000`
+
+注意：本题与主站 343 题相同：https://leetcode-cn.com/problems/integer-break/
+
+py
+
+```
+class Solution:
+    def cuttingRope(self, n: int) -> int:
+        if n <= 3: return n - 1
+        a, b, p, x, rem = n // 3 - 1, n % 3, 1000000007, 3 , 1
+        while a > 0:
+            if a % 2: rem = (rem * x) % p
+            x = x ** 2 % p
+            a //= 2
+        if b == 0: return (rem * 3) % p # = 3^(a+1) % p
+        if b == 1: return (rem * 4) % p # = 3^a * 4 % p
+        return (rem * 6) % p # = 3^(a+1) * 2  % p
+```
+
+js
+
+```
+var cuttingRope = function (n) {
+    if (n <= 3) return n - 1
+    let cnt = Math.floor(n / 3)
+    let left = n % 3
+    // 重写pow函数
+    const pow = (basic, exp) => {
+        let tmp = 1
+        while (exp > 0) {
+            if (tmp * basic > 1000000007) {
+                tmp = tmp * basic % 1000000007
+            } else {
+                tmp = tmp * basic
+            }
+            exp -= 1
+        }
+        return tmp
+    }
+    if (left == 0) return pow(3, cnt)
+    else if (left == 1) return pow(3, cnt - 1) * 4 % 1000000007
+    else if (left == 2) return pow(3, cnt) * left % 1000000007
+};
+```
+
+#### [剑指 Offer 15. 二进制中1的个数](https://leetcode.cn/problems/er-jin-zhi-zhong-1de-ge-shu-lcof/)
+
+编写一个函数，输入是一个无符号整数（以二进制串的形式），返回其二进制表达式中数字位数为 '1' 的个数（也被称为 [汉明重量](http://en.wikipedia.org/wiki/Hamming_weight)).）。
+
+**提示：**
+
+-   请注意，在某些语言（如 Java）中，没有无符号整数类型。在这种情况下，输入和输出都将被指定为有符号整数类型，并且不应影响您的实现，因为无论整数是有符号的还是无符号的，其内部的二进制表示形式都是相同的。
+-   在 Java 中，编译器使用 [二进制补码](https://baike.baidu.com/item/二进制补码/5295284) 记法来表示有符号整数。因此，在上面的 **示例 3** 中，输入表示有符号整数 `-3`。
+
+**示例 1：**
+
+```
+输入：n = 11 (控制台输入 00000000000000000000000000001011)
+输出：3
+解释：输入的二进制串 00000000000000000000000000001011 中，共有三位为 '1'。
+```
+
+**示例 2：**
+
+```
+输入：n = 128 (控制台输入 00000000000000000000000010000000)
+输出：1
+解释：输入的二进制串 00000000000000000000000010000000 中，共有一位为 '1'。
+```
+
+**示例 3：**
+
+```
+输入：n = 4294967293 (控制台输入 11111111111111111111111111111101，部分语言中 n = -3）
+输出：31
+解释：输入的二进制串 11111111111111111111111111111101 中，共有 31 位为 '1'。
+```
+
+**提示：**
+
+-   输入必须是长度为 `32` 的 **二进制串** 。
+
+注意：本题与主站 191 题相同：https://leetcode-cn.com/problems/number-of-1-bits/
+
+py
+
+```
+class Solution:
+    def hammingWeight(self, n: int) -> int:
+        ret = sum(1 for i in range(32) if n & (1 << i)) 
+        return ret
+```
+
+js
+
+```
+var hammingWeight = function(n) {
+    let ret = 0;
+    for (let i = 0; i < 32; i++) {
+        if ((n & (1 << i)) !== 0) {
+            ret++;
+        }
+    }
+    return ret;
+};
+```
+
+#### [剑指 Offer 16. 数值的整数次方](https://leetcode.cn/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/)
+
+实现 [pow(*x*, *n*)](https://www.cplusplus.com/reference/valarray/pow/) ，即计算 x 的 n 次幂函数（即，xn）。不得使用库函数，同时不需要考虑大数问题。
+
+**示例 1：**
+
+```
+输入：x = 2.00000, n = 10
+输出：1024.00000
+```
+
+**示例 2：**
+
+```
+输入：x = 2.10000, n = 3
+输出：9.26100
+```
+
+**示例 3：**
+
+```
+输入：x = 2.00000, n = -2
+输出：0.25000
+解释：2-2 = 1/22 = 1/4 = 0.25
+```
+
+**提示：**
+
+-   `-100.0 < x < 100.0`
+-   `-231 <= n <= 231-1`
+-   `-104 <= xn <= 104`
+
+注意：本题与主站 50 题相同：https://leetcode-cn.com/problems/powx-n/
+
+py
+
+```
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        def quickMul(N):
+            if N == 0:
+                return 1.0
+            y = quickMul(N // 2)
+            return y * y if N % 2 == 0 else y * y * x
+        
+        return quickMul(n) if n >= 0 else 1.0 / quickMul(-n)
+```
+
+js
+
+```
+var myPow = function(x, n) {
+    //如果指数是0
+    if(n === 0){
+        return 1;
+    }
+    //如果指数是1 返回x
+    if(n === 1){
+        return x;
+    }
+
+    //n绝对值，不能为负
+    let absn =Math.abs(n);
+    //结果不能为0
+    let result = 1;
+    //不能为0
+    while(absn){
+        //判断奇偶数
+        //absn 也就是 n值，根据最右位是否为1来判断
+        //3的二进： 11
+        //1的二进： 01
+        //是成立的
+        if(absn & 1){
+            //将当前x累乘到result
+            result = result * x;
+        }
+        
+        x = x*x;
+        //缩小范围
+        absn = Math.floor(absn/2); 
+
+    }
+
+        //是否是负指数
+    const isNegative = n < 0;
+
+    return isNegative ? 1 / result : result
+};
+```
+
+#### [剑指 Offer 17. 打印从1到最大的n位数](https://leetcode.cn/problems/da-yin-cong-1dao-zui-da-de-nwei-shu-lcof/)
+
+输入数字 `n`，按顺序打印出从 1 到最大的 n 位十进制数。比如输入 3，则打印出 1、2、3 一直到最大的 3 位数 999。
+
+**示例 1:**
+
+```
+输入: n = 1
+输出: [1,2,3,4,5,6,7,8,9]
+```
+
+说明：
+
+-   用返回一个整数列表来代替打印
+
+-   n 为正整数
+
+    py
+
+```
+class Solution:
+    def printNumbers(self, n: int) -> List[int]:
+        res = []
+        for i in range(1, 10 ** n):
+            res.append(i)
+        return res
+```
+
+js
+
+```
+var printNumbers = function(n) {
+    var a = Math.pow(10,n);
+    var arr = [];
+    for(var i = 1;i<a;i++){
+        arr.push(i);
+        }
+    return arr;
+};
+```
+
+#### [剑指 Offer 18. 删除链表的节点](https://leetcode.cn/problems/shan-chu-lian-biao-de-jie-dian-lcof/)
+
+给定单向链表的头指针和一个要删除的节点的值，定义一个函数删除该节点。
+
+返回删除后的链表的头节点。
+
+**注意：**此题对比原题有改动
+
+**示例 1:**
+
+```
+输入: head = [4,5,1,9], val = 5
+输出: [4,1,9]
+解释: 给定你链表中值为 5 的第二个节点，那么在调用了你的函数之后，该链表应变为 4 -> 1 -> 9.
+```
+
+**示例 2:**
+
+```
+输入: head = [4,5,1,9], val = 1
+输出: [4,5,9]
+解释: 给定你链表中值为 1 的第三个节点，那么在调用了你的函数之后，该链表应变为 4 -> 5 -> 9.
+```
+
+**说明：**
+
+-   题目保证链表中节点的值互不相同
+-   若使用 C 或 C++ 语言，你不需要 `free` 或 `delete` 被删除的节点
+
+```
+class Solution:
+    def deleteNode(self, head: ListNode, val: int) -> ListNode:
+        if head.val == val: return head.next
+        pre, cur = head, head.next
+        while cur and cur.val != val:
+            pre, cur = cur, cur.next
+        if cur: pre.next = cur.next
+        return head
+```
+
+js
+
+```
+var deleteNode = function(head, val) {
+    let c=new ListNode(null);
+    c.next=head;
+    let r=c;
+    while(head){
+        if(head.val==val){
+            break;
+        }
+        head=head.next
+        c=c.next
+    }
+    //如果有的话
+    if(c.next){
+        c.next=c.next.next
+    }
+    return r.next;
+};
+```
+
+#### [剑指 Offer 19. 正则表达式匹配](https://leetcode.cn/problems/zheng-ze-biao-da-shi-pi-pei-lcof/)
+
+请实现一个函数用来匹配包含`'. '`和`'*'`的正则表达式。模式中的字符`'.'`表示任意一个字符，而`'*'`表示它前面的字符可以出现任意次（含0次）。在本题中，匹配是指字符串的所有字符匹配整个模式。例如，字符串`"aaa"`与模式`"a.a"`和`"ab*ac*a"`匹配，但与`"aa.a"`和`"ab*a"`均不匹配。
+
+**示例 1:**
+
+```
+输入:
+s = "aa"
+p = "a"
+输出: false
+解释: "a" 无法匹配 "aa" 整个字符串。
+```
+
+**示例 2:**
+
+```
+输入:
+s = "aa"
+p = "a*"
+输出: true
+解释: 因为 '*' 代表可以匹配零个或多个前面的那一个元素, 在这里前面的元素就是 'a'。因此，字符串 "aa" 可被视为 'a' 重复了一次。
+```
+
+**示例 3:**
+
+```
+输入:
+s = "ab"
+p = ".*"
+输出: true
+解释: ".*" 表示可匹配零个或多个（'*'）任意字符（'.'）。
+```
+
+**示例 4:**
+
+```
+输入:
+s = "aab"
+p = "c*a*b"
+输出: true
+解释: 因为 '*' 表示零个或多个，这里 'c' 为 0 个, 'a' 被重复一次。因此可以匹配字符串 "aab"。
+```
+
+**示例 5:**
+
+```
+输入:
+s = "mississippi"
+p = "mis*is*p*."
+输出: false
+```
+
+-   `s` 可能为空，且只包含从 `a-z` 的小写字母。
+-   `p` 可能为空，且只包含从 `a-z` 的小写字母以及字符 `.` 和 `*`，无连续的 `'*'`。
+
+注意：本题与主站 10 题相同：https://leetcode-cn.com/problems/regular-expression-matching/
+
+```
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        m, n = len(s), len(p)
+
+        def matches(i: int, j: int) -> bool:
+            if i == 0:
+                return False
+            if p[j - 1] == '.':
+                return True
+            return s[i - 1] == p[j - 1]
+
+        f = [[False] * (n + 1) for _ in range(m + 1)]
+        f[0][0] = True
+        for i in range(m + 1):
+            for j in range(1, n + 1):
+                if p[j - 1] == '*':
+                    f[i][j] |= f[i][j - 2]
+                    if matches(i, j - 1):
+                        f[i][j] |= f[i - 1][j]
+                else:
+                    if matches(i, j):
+                        f[i][j] |= f[i - 1][j - 1]
+        return f[m][n]
+```
+
+js
+
+```
+/**
+ * @param {string} s
+ * @param {string} p
+ * @return {boolean}
+ */
+var isMatch = function (s, p) {
+    //dp[i][j]表示S串前i个字符和P串前j个字符是否匹配
+    //如果P最后一个字符是正常字符：
+    //     - dp[i][j]=dp[i-1][j-1]
+    //如果P最后一个字符是"."：
+    //     - dp[i][j]=dp[i-1][j-1]
+    //如果P最后一个字符是"*"：
+    //     - dp[i][j]=dp[i][j-2], 看"x*"，*前符号不相等
+    //     - dp[i][j]=dp[i-1][j], 看"x*"，*前符号相等或为"."
+    if (s.length == 0 && p.length == 0) return true;
+    if (p.length == 0) return false;//P为空就不可能匹配
+    if (s.length == 0) {
+        if (p.charAt(p.length - 1) == '*') return isMatch(s, p.substring(0, p.length - 2));
+        return false;
+    }
+    if (p.charAt(p.length - 1) != '.' && p.charAt(p.length - 1) != '*') {
+        return p.charAt(p.length - 1) == s.charAt(s.length - 1) && isMatch(s.substring(0, s.length - 1), p.substring(0,p.length - 1));
+    }
+    else if (p.charAt(p.length - 1) == '.') return isMatch(s.substring(0, s.length - 1), p.substring(0, p.length - 1));
+    else if (p.charAt(p.length - 1) == '*') {
+        //p最后一个字符是*
+        //相等：
+        //  如果p的*前字符与s最后字符相等 或 p的*前是"."
+        if (p.charAt(p.length - 2) == s.charAt(s.length - 1) || p.charAt(p.length - 2) == '.')
+            //这里要注意“||”之后这句，就是不看的可能性，如果不加的话会有几十个用例过不去
+            //原因是比如s=aaa, p=ab*a*c*a，中间的a*会直接把s前面两个a全部递归完，这样递归返回的时候就是false，
+            //然而实际上a*不确定有多少个a，需要有“不看”的可能性，也就是直接丢弃x*的情况
+            return isMatch(s.substring(0, s.length - 1), p)||isMatch(s, p.substring(0, p.length - 2));
+        //不等
+        //  直接废弃P串最后2位
+        return isMatch(s, p.substring(0, p.length - 2));
+    }
+};
+```
+
+#### [剑指 Offer 20. 表示数值的字符串](https://leetcode.cn/problems/biao-shi-shu-zhi-de-zi-fu-chuan-lcof/)
+
+请实现一个函数用来判断字符串是否表示**数值**（包括整数和小数）。
+
+**数值**（按顺序）可以分成以下几个部分：
+
+1.  若干空格
+2.  一个 **小数** 或者 **整数**
+3.  （可选）一个 `'e'` 或 `'E'` ，后面跟着一个 **整数**
+4.  若干空格
+
+**小数**（按顺序）可以分成以下几个部分：
+
+1.  （可选）一个符号字符（`'+'` 或 `'-'`）
+2.  下述格式之一：
+    1.  至少一位数字，后面跟着一个点 `'.'`
+    2.  至少一位数字，后面跟着一个点 `'.'` ，后面再跟着至少一位数字
+    3.  一个点 `'.'` ，后面跟着至少一位数字
+
+**整数**（按顺序）可以分成以下几个部分：
+
+1.  （可选）一个符号字符（`'+'` 或 `'-'`）
+2.  至少一位数字
+
+部分**数值**列举如下：
+
+-   `["+100", "5e2", "-123", "3.1416", "-1E-16", "0123"]`
+
+部分**非数值**列举如下：
+
+-   `["12e", "1a3.14", "1.2.3", "+-5", "12e+5.4"]`
+
+**示例 1：**
+
+```
+输入：s = "0"
+输出：true
+```
+
+**示例 2：**
+
+```
+输入：s = "e"
+输出：false
+```
+
+**示例 3：**
+
+```
+输入：s = "."
+输出：false
+```
+
+**示例 4：**
+
+```
+输入：s = "    .1  "
+输出：true
+```
+
+**提示：**
+
+-   `1 <= s.length <= 20`
+-   `s` 仅含英文字母（大写和小写），数字（`0-9`），加号 `'+'` ，减号 `'-'` ，空格 `' '` 或者点 `'.'` 。
+
+py
+
+```
+class Solution:
+    def isNumber(self, s: str) -> bool:
+        states = [
+            { ' ': 0, 's': 1, 'd': 2, '.': 4 }, # 0. start with 'blank'
+            { 'd': 2, '.': 4 } ,                # 1. 'sign' before 'e'
+            { 'd': 2, '.': 3, 'e': 5, ' ': 8 }, # 2. 'digit' before 'dot'
+            { 'd': 3, 'e': 5, ' ': 8 },         # 3. 'digit' after 'dot'
+            { 'd': 3 },                         # 4. 'digit' after 'dot' (‘blank’ before 'dot')
+            { 's': 6, 'd': 7 },                 # 5. 'e'
+            { 'd': 7 },                         # 6. 'sign' after 'e'
+            { 'd': 7, ' ': 8 },                 # 7. 'digit' after 'e'
+            { ' ': 8 }                          # 8. end with 'blank'
+        ]
+        p = 0                           # start with state 0
+        for c in s:
+            if '0' <= c <= '9': t = 'd' # digit
+            elif c in "+-": t = 's'     # sign
+            elif c in "eE": t = 'e'     # e or E
+            elif c in ". ": t = c       # dot, blank
+            else: t = '?'               # unknown
+            if t not in states[p]: return False
+            p = states[p][t]
+        return p in (2, 3, 7, 8)
+```
+
+js
+
+```
+var isNumber = function(s) {
+    //横坐标表示动作（输入的字符）,纵坐标表示状态
+    //动作：0 空格， 1 +-， 2 0-9，3 . ， 4 eE
+    //状态：0 首部空格， 1 符号， 2 整数部分， 3 前面有数的小数点 ，4 前面没有数的小数点， 5 小数
+    //6 Ee , 7 指数符号， 8 指数， 9 尾部空格
+    //接收状态(遍历完最后一个字符所处的状态)为 2 3 5 8 9
+    let trans = [
+        [0,null,9,9,null,9,null,null,9,9],
+        [1,null,null,null,null,null,7,null,null,null],
+        [2,2,2,5,5,5,8,8,8,null],
+        [4,4,3,null,null,null,null,null,null,null],
+        [null,null,6,6,null,6,null,null,null,null]
+    ]
+    const charTra = char =>{
+        switch(char){
+            case ' ':return 0;
+            case '+': case '-':return 1;
+            case '0': case '1': case '2':case '3': case '4': case '5':case '6':
+            case '7': case '8': case '9': return 2;
+            case '.':return 3;
+            case 'e': case 'E':return 4;
+            default: return null;
+        }
+    }
+     
+    let j = 0;
+    for(let i = 0; i < s.length; i++){
+        let ch = charTra(s[i]);
+        if(ch == null){//针对 f.e 出现了其他字符
+            return false;
+        }
+        let next = trans[ch][j];
+        if(next!=null){
+            j = next;
+        }else{
+            return false;
+        }
+            
+    }
+    if(j==2||j==3||j==5||j==8||j==9)
+        return true;
+    else
+        return false;
+}
+```
+
+#### [剑指 Offer 21. 调整数组顺序使奇数位于偶数前面](https://leetcode.cn/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof/)
+
+输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数在数组的前半部分，所有偶数在数组的后半部分。
+
+**示例：**
+
+```
+输入：nums = [1,2,3,4]
+输出：[1,3,2,4] 
+注：[3,1,2,4] 也是正确的答案之一。
+```
+
+**提示：**
+
+1.  `0 <= nums.length <= 50000`
+2.  `0 <= nums[i] <= 10000`
+
+py
+
+```
+class Solution:
+    def exchange(self, nums: List[int]) -> List[int]:
+        i, j = 0, len(nums) - 1
+        while i < j:
+            while i < j and nums[i] & 1 == 1: i += 1
+            while i < j and nums[j] & 1 == 0: j -= 1
+            nums[i], nums[j] = nums[j], nums[i]
+        return nums
+```
+
+js
+
+```
+var exchange = function(nums) {
+    var l = 0, r = nums.length - 1;
+    while(l < r){
+        if(nums[l]%2 == 0 && nums[r]%2 == 1){
+            var tmp = nums[l];
+            nums[l] = nums[r];
+            nums[r] = tmp;
+        }
+        if(nums[l]%2 == 1) l++;
+        if(nums[r]%2 == 0) r--;
+    }
+    return nums;
+};
+```
+
