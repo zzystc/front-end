@@ -90,6 +90,341 @@ const _deleteRepeat = array => {
 }
 ```
 
+ES6
+
+```
+	new Set(arr)//返回值为类数组，可以用Array.from(new Set(arr))转换一下
+    Array.from(new Set(arr))
+	//扩展运算符：
+	[...new Set(arr)]
+```
+
+### FED3 合法的URL
+
+#### 描述
+
+请补全JavaScript代码，要求以Boolean的形式返回字符串参数是否为合法的URL格式。
+注意：
+\1. 协议仅为HTTP(S)
+
+```
+题解 | #合法的URL#
+本题考点：正则表达式
+
+根据题目要求判断参数URL是否合法。首先URL结构一般包括协议、主机名、主机端口、路径、请求信息、哈希，而本题协议已给出为HTTP(S)，使用正则匹配URL，核心步骤有：
+
+首先必须是以http(s)开头并且可以不包含协议头部信息
+主机名可以使用"-"符号，所以两种情况都要判断，包含"-"或不包含"-"
+顶级域名很多，直接判断"."之后是否为字母即可
+最后判断端口、路径和哈希，这些参数可有可无
+
+// 补全代码
+// 开始符 ^
+// 协议部分http(s)://		 表示为((https|http|ftp|rtsp|mms)?:\/\/)
+// 域名部分					 表示为(([A-Za-z0-9]+-[A-Za-z0-9]+|[A-Za-z0-9]+)\.)+
+// 顶级域名com cn等为2-6位   表示为([a-zA-Z]{2,6})
+// 端口部分					 表示为(:\d+)?, ?表示0次或1次
+// 请求路径如/login			表示为 (\/.*)?
+// 问号传参及哈希值如?age=1   表示为 (\?.*)?和(#.*)?
+// 结束符 $
+ const _isUrl = url => {
+   // 补全代码
+   let reg = /^((https|http|ftp|rtsp|mms)?:\/\/)(([A-Za-z0-9]+-[A-Za-z0-9]+|[A-Za-z0-9]+)\.)+([A-Za-z]{2,6})(:\d+)?(\/.*)?(\?.*)?(#.*)?$/
+   return reg.test(url)
+ }
+
+```
+
+### FED4 快速排序
+
+#### 描述
+
+请补全JavaScript代码，要求将数组参数中的数字从小到大进行排序并返回该数组。
+注意：
+\1. 数组元素仅包含数字
+\2. 请优先使用快速排序方法
+
+示例1
+
+输入：
+
+```
+_quickSort([0,-1,1,-2,2])
+```
+
+输出：
+
+```
+[-2,-1,0,1,2]
+```
+
+```
+题解 | #快速排序#
+根据题目要求，通过快速排序实现数组参数中数字从小到大排序。快速排序的基本思想是通过分治来使一部分均比另一部分小（大）再使两部分重复该步骤而实现有序的排列。核心步骤有：
+
+选择一个基准值（pivot）
+以基准值将数组分割为两部分
+递归分割之后的数组直到数组为空或只有一个元素为止
+
+const _quickSort = array => {
+    if(array.length <= 1) return array
+    var pivotIndex = Math.floor(array.length / 2)
+    var pivot = array.splice(pivotIndex, 1)[0]
+    var left = []
+    var right = []
+    for (var i=0 ; i<array.length ; i++){
+        if (array[i] < pivot) {
+            left.push(array[i])
+        } else {
+            right.push(array[i])
+        }
+    }
+    return _quickSort(left).concat([pivot], _quickSort(right))
+}
+```
+
+### FED5 全排列
+
+#### 描述
+
+请补全JavaScript代码，要求以数组的形式返回字符串参数的所有排列组合。
+注意：
+\1. 字符串参数中的字符无重复且仅包含小写字母
+\2. 返回的排列组合数组不区分顺序
+
+示例1
+
+输入：
+
+```
+_permute('abc')
+```
+
+输出：
+
+```
+['abc','acb','bac','bca','cab','cba']
+```
+
+```
+题解 | #全排列#
+‘abc’的全排列等于 ('a'拼接上'bc'的全排列数组中的每一项) + ('b'拼接上'ac'的全排列数组的每一项) + ('c'拼接上'ab'的全排列数组的每一项)
+
+因此我们遍历传入的string，将每一个字符拼接上剩余字符串的全排列数组即可，代码如下： js
+
+            // 补全代码
+            const _permute = string => {
+            if(string.length === 1) {
+                return [string]
+            }
+            const results = []
+            for(let s of string){
+                const arr = string.split('').filter(str =>str !== s)
+                _permute(arr.join('')).forEach(item => {
+                    results.push(s + item)
+                })
+            }
+            return results
+        }
+```
+
+### FED6 instanceof
+
+#### 描述
+
+请补全JavaScript代码，要求以Boolean的形式返回第一个实例参数是否在第二个函数参数的原型链上。
+
+```
+题解 | #instanceof#
+本题考点：原型链
+
+根据题目要求，实现一个仿instanceof功能的"_instanceof"函数，该函数可以判断首参是否在第二个Fn构造函数的原型链上，核心步骤有：
+
+获取首个对象参数的原型对象
+获取Fn函数的原型对象
+进入死循环，当两个参数的原型对象相等时返回true
+当两个参数的原型对象不相等时获取首个对象参数原型的原型并且循环该步骤直到null时返回false
+
+const _instanceof = (target, Fn) => {
+    let proto = target.__proto__
+    let prototype = Fn.prototype
+    while(true) {
+        if(proto === Fn.prototype) return true
+        if(proto === null) return false
+        proto = proto.__proto__
+    }
+}
+```
+
+### FED7 Array.map
+
+#### 描述
+
+请补全JavaScript代码，要求实现Array.map函数的功能且该新函数命名为"_map"。
+
+示例1
+
+输入：
+
+```
+[1,2]._map(i => i * 2)
+```
+
+输出：
+
+```
+[2,4]
+```
+
+```
+题解 | #Array.map#
+本题考点：Array.map
+
+根据题目要求，实现一个仿Array.map功能的"Array._map"函数，该函数创建一个新数组，该新数组的结果是数组中的每个元素都调用一次函数参数后的返回值，核心步骤有：
+
+判断参数是否为函数，如果不是则直接返回
+创建一个空数组用于承载新的内容
+循环遍历数组中的每个值，分别调用函数参数，将返回值添加进空数组中
+返回新的数组
+
+Array.prototype._map = function(Fn) {
+    if (typeof Fn !== 'function') return
+    const array = this
+    const newArray = new Array(array.length)
+    for (let i=0; i<array.length; i++) {
+        let result = Fn.call(arguments[1], array[i], i, array)
+        newArray[i] = result
+    }
+    return newArray
+}
+```
+
+
+
+### FED8 请补全JavaScript代码，要求实现Array.filter函数的功能且该新函数命名为&amp;quot;_filter&amp;quot;。
+
+#### 描述
+
+请补全JavaScript代码，要求实现Array.filter函数的功能且该新函数命名为"_filter"。
+
+示例1
+
+输入：
+
+```
+[1,2]._filter(i => i>1)
+```
+
+输出：
+
+```
+[2]
+```
+
+```
+题解 | #Array.filter#
+08_Array.filter
+本题考点：Array.filter
+
+根据题目要求，实现一个仿Array.filter功能的"Array._filter"函数，该函数创建一个新数组，该数组包含通过函数参数条件的所有元素，核心步骤有：
+
+判断参数是否为函数，如果不是则直接返回
+创建一个空数组用于承载新的内容
+循环遍历数组中的每个值，分别调用函数参数，将满足判断条件的元素添加进空数组中
+返回新的数组
+
+Array.prototype._filter = function(Fn) {
+    if (typeof Fn !== 'function') return
+    const array = this
+    const newArray = []
+    for (let i=0; i<array.length; i++) {
+        const result = Fn.call(arguments[1], array[i], i, array)
+        result && newArray.push(array[i])
+    }
+    return newArray
+}
+```
+
+### FED9 Array.reduce
+
+#### 描述
+
+请补全JavaScript代码，要求实现Array.reduce函数的功能且该新函数命名为"_reduce"。
+
+## 示例1
+
+输入：
+
+```
+[1,2,3]._reduce((left, right) => left + right)
+```
+
+输出：
+
+```
+6
+```
+
+```
+题解 | #Array.reduce#
+09_Array.reduce
+本题考点：Array.reduce
+
+根据题目要求，实现一个仿Array.reduce功能的"Array._reduce"函数，并且需要将”_reduce“函数挂载在Array的原型对象上。根据Array.reduce的特点有：
+
+接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终计算为一个值
+可以接收一个初始值，当没有初始值时，默认初始值为数组中的第一项
+实现该函数的核心步骤有：
+
+在Array的原型对象上添加”_reduce“函数
+”_reduce“函数第一个参数为回调函数，第二个参数为初始值
+进入数组长度的循环体中
+当初始值为空时，首个被加数为数组的第一项
+当初始值不为空时，首个被加数为初始值
+
+Array.prototype._reduce = function(fn, prev) {
+    for(let i=0 ; i<this.length ; i++) {
+        if(prev === undefined) {
+            prev = fn(this[i], this[i+1], i+1, this)
+                ++i
+        } else {
+            prev = fn(prev, this[i], i, this)
+        }
+    }
+    return prev
+
+```
+
+### FED10 _objectCreate
+
+#### 描述
+
+请补全JavaScript代码，要求实现Object.create函数的功能且该新函数命名为"_objectCreate"。
+
+```
+题解 | #_objectCreate#
+10_Object.create
+本题考点：原型对象
+
+根据题目要求，实现一个仿Object.create功能的"_objectCreate"函数，该函数创建一个新对象，使用现有的对象来提供新创建的对象的proto，核心步骤有：
+
+创建一个临时函数
+将该临时函数的原型指向对象参数
+返回该临时对象的实例
+参考答案：
+
+Object.create法创建一个新对象，使用现有的对象来提供新创建的对象的proto。
+
+const _objectCreate = proto => {
+    if(typeof proto !== 'object' || proto === null) return
+    const fn = function() {}
+    fn.prototype = proto
+    return new fn()
+}
+```
+
+
+
 
 
 
