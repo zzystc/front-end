@@ -301,7 +301,7 @@ Array.prototype._map = function(Fn) {
 
 
 
-### FED8 请补全JavaScript代码，要求实现Array.filter函数的功能且该新函数命名为&amp;quot;_filter&amp;quot;。
+### FED8 实现Array.filter函数的功能
 
 #### 描述
 
@@ -351,7 +351,7 @@ Array.prototype._filter = function(Fn) {
 
 请补全JavaScript代码，要求实现Array.reduce函数的功能且该新函数命名为"_reduce"。
 
-## 示例1
+示例1
 
 输入：
 
@@ -450,9 +450,335 @@ Function.prototype._call = function(target = window) {
 }
 ```
 
+### FED12 Function.bind
 
+#### 描述
 
+请补全JavaScript代码，要求实现Function.bind函数的功能且该新函数命名为"_bind"。
 
+```
+题解 | #Function.bind#
+12_Function.bind
+本题考点：this、apply
+
+根据题目要求，实现一个仿Function.bind功能的"Function._bind"函数，该函数会返回一个新的函数且该新函数内部通过apply修改了函数内部this指向，核心步骤有：
+
+创建一个新this用来保存旧的this对象
+返回一个匿名函数，该匿名函数返回通过apply修改了指针指向的函数运算结果
+参考答案：
+
+Function.prototype._bind = function(target, ...arguments1) {
+    const _this = this
+    return function(...arguments2) {
+        return _this.apply(target,arguments1.concat(arguments2))
+    }
+}
+```
+
+### FED13 实现new操作符
+
+#### 描述
+
+请补全JavaScript代码，要求实现new操作符的功能。
+
+```
+本题考点：原型链
+
+根据题目要求，实现一个仿new功能的新"_new"函数，该函数会返回一个对象，该对象的构造函数为函数参数、原型对象为函数参数的原型，核心步骤有：
+
+创建一个新对象
+获取函数参数
+将新对象的原型对象和函数参数的原型连接起来
+将新对象和参数传给构造器执行
+如果构造器返回的不是对象，那么就返回第一个新对象
+参考答案：
+
+const _new = function() {
+    const object1 = {}
+    const Fn = [...arguments].shift()
+    object1.__proto__ = Fn.prototype
+    const object2 = Fn.apply(object1, arguments)
+    return object2 instanceof Object ? object2 : object1
+}
+```
+
+### FED14 Object.freeze
+
+#### 描述
+
+请补全JavaScript代码，要求实现Object.freeze函数的功能且该新函数命名为"_objectFreeze"
+
+```
+题解 | #Object.freeze#
+需要注意的点
+注意不可枚举的属性也要重新冻结。
+注意 Symbol 类型作为 key 值的情况，也要冻结。
+注意只冻结对象自有的属性（使用 for ... in 会把原型链上的可枚举属性遍历出来）。
+注意不可扩展性（不能添加新属性，使用 Object.preventExtensions() 或 Object.seal() 实现，同时也相当于把原型链冻结）。
+
+const _objectFreeze = object => {
+    // 补全代码
+    if(typeof object !== 'object' || object === null) {
+        throw new TypeError(`the ${object} is not a object`)
+    }
+
+    const keys = Object.getOwnPropertyNames(object)
+    const symbols = Object.getOwnPropertySymbols(object)
+
+    ;[...keys, ...symbols].forEach(key => {
+        Object.defineProperty(object, key, {
+            configurable: false,
+            writable: false,
+        })
+    })
+
+    Object.preventExtensions(object)
+}
+```
+
+### FED15 浅拷贝
+
+#### 描述
+
+请补全JavaScript代码，要求实现一个对象参数的浅拷贝并返回拷贝之后的新对象。
+注意：
+\1. 参数可能包含函数、正则、日期、ES6新对象
+
+```
+15_浅拷贝
+本题考点：遍历
+
+根据题目要求，实现一个对象参数的浅拷贝并返回拷贝之后的新对象，因为可能包含函数、正则、日期、ES6新对象，所以需要对这些对象类型进行特殊判断，核心步骤有：
+
+如果对象参数的数据类型不为"object"或为"null"，则直接返回该参数
+如果是"object"，就获取该参数的构造函数名，通过正则表达式判断该对象是否为函数、正则、日期、ES6新对象等，如果返回true，则直接返回该参数
+当以上条件判断之后函数依然没有结束时，此时通过数组的原型方法判断该参数为普通对象或数组并创建相应数据类型的新变量
+进入遍历体，将对象参数的每一项赋值给新变量
+最终返回该新变量
+参考答案：
+
+const _shallowClone = target => {
+    if(typeof target === 'object' && target !== null) {
+        const constructor = target.constructor
+		if(/^(Function|RegExp|Date|Map|Set)$/i.test(constructor.name)) return target
+        const cloneTarget = Array.isArray(target) ? [] : {}
+        for(prop in target) {
+            if(target.hasOwnProperty(prop)) {
+                cloneTarget[prop] = target[prop]
+            }
+        }
+        return cloneTarget
+    } else {
+        return target
+    }
+}
+```
+
+### FED16 简易深拷贝
+
+#### 描述
+
+请补全JavaScript代码，要求实现对象参数的深拷贝并返回拷贝之后的新对象。
+注意：
+\1. 参数对象和参数对象的每个数据项的数据类型范围仅在数组、普通对象（{}）、基本数据类型中]
+\2. 无需考虑循环引用问题
+
+```
+16_简易深拷贝
+本题考点：递归、遍历
+
+根据题目要求，实现对象参数的深拷贝并返回拷贝之后的新对象，因为参数对象和参数对象的每个数据项的数据类型范围仅在数组、普通对象（{}）、基本数据类型中且无需考虑循环引用问题，所以不需要做过多的数据类型判断，核心步骤有：
+
+如果对象参数的数据类型不为“object”或为“null”，则直接返回该参数
+根据该参数的数据类型是否为数组创建新对象
+遍历该对象参数，将每一项递归调用该函数本身的返回值赋给新对象
+参考答案：
+
+const _sampleDeepClone = target => {
+    if(typeof target === 'object' && target !== null) {
+        const cloneTarget = Array.isArray(target) ? [] : {}
+        for(prop in target) {
+            if(target.hasOwnProperty(prop)) {
+                cloneTarget[prop] = _sampleDeepClone(target[prop])
+            }
+        }
+        return cloneTarget
+    } else {
+        return target
+    }
+}
+```
+
+### FED17 深拷贝
+
+### 描述
+
+请补全JavaScript代码，要求实现对象参数的深拷贝并返回拷贝之后的新对象。
+注意：
+\1. 需要考虑函数、正则、日期、ES6新对象
+\2. 需要考虑循环引用问题
+
+```
+17_深拷贝
+本题考点：递归、遍历、Map
+
+根据题目要求，实现对象参数的深拷贝并返回拷贝之后的新对象，因为需要考虑参数对象和参数对象的每个数据项的数据类型可能包括函数、正则、日期、ES6新对象且必须考虑循环引用问题，所以需要引入ES6新对象Map并且详细的判断数据类型，核心步骤有：
+
+首先判断对象参数是否为“null”，是则返回“null”
+判断对象参数数据类型是否为“object”，不是则返回该参数
+获取到对象参数的构造函数名，判断是否为函数、正则、日期、ES6新对象其中之一，如果是则直接返回通过该参数对象对应的构造函数生成的新实例对象
+当以上条件判断之后函数依然没有结束时继续进行以下操作
+在Map对象中获取当前参数对象，如果能获取到，则说明这里为循环引用并返回Map对象中该参数对象的值
+如果在Map对象中没有获取到对应的值，则保存该参数对象到Map中，作为标记
+根据该参数的数据类型是否为数组创建新对象
+遍历该对象参数，将每一项递归调用该函数本身的返回值赋给新对象
+参考答案：
+
+const _completeDeepClone = (target, map = new Map()) => {
+    if(target === null) return target
+    if(typeof target !== 'object') return target
+    const constructor = target.constructor
+    if(/^(Function|RegExp|Date|Map|Set)$/i.test(constructor.name)) return new constructor(target)
+    if(map.get(target)) return map.get(target)
+    map.set(target, true)
+    const cloneTarget = Array.isArray(target) ? [] : {}
+    for(prop in target) {
+        if(target.hasOwnProperty(prop)) {
+        	cloneTarget[prop] = _completeDeepClone(target[prop], map)
+        }
+    }
+    return cloneTarget
+}
+```
+
+### FED18 寄生组合式继承
+
+#### 描述
+
+请补全JavaScript代码，要求通过寄生组合式继承使"Chinese"构造函数继承于"Human"构造函数。要求如下：
+\1. 给"Human"构造函数的原型上添加"getName"函数，该函数返回调用该函数对象的"name"属性
+\2. 给"Chinese"构造函数的原型上添加"getAge"函数，该函数返回调用该函数对象的"age"属性
+
+```
+18_寄生组合式继承
+本题考点：原型链、call、Object.create
+
+根据题目要求，通过寄生组合式继承使"Chinese"构造函数继承于"Human"构造函数。寄生组合式继承，即通过借用构造函数来继承属性，通过原型链的形式来继承方法，只调用了一次父类构造函数，效率高，也避免了在子类的原型对象上创建不必要的、多余的属性，原型链也不会被改变，核心步骤有：
+
+在"Human"构造函数的原型上添加"getName"函数
+在”Chinese“构造函数中通过call函数借助”Human“的构造器来获得通用属性
+Object.create函数返回一个对象，该对象的__proto__属性为对象参数的原型。此时将”Chinese“构造函数的原型和通过Object.create返回的实例对象联系起来
+最后修复"Chinese"构造函数的原型链，即自身的"constructor"属性需要指向自身
+在”Chinese“构造函数的原型上添加”getAge“函数
+参考答案：
+
+function Human(name) {
+    this.name = name
+    this.kingdom = 'animal'
+    this.color = ['yellow', 'white', 'brown', 'black']
+}
+Human.prototype.getName = function() {
+    return this.name
+}
+function Chinese(name,age) {
+    Human.call(this,name)
+    this.age = age
+    this.color = 'yellow'
+}
+Chinese.prototype = Object.create(Human.prototype)
+Chinese.prototype.constructor = Chinese
+Chinese.prototype.getAge = function() {
+    return this.age
+}
+```
+
+### FED19 发布订阅模式
+
+#### 描述
+
+请补全JavaScript代码，完成"EventEmitter"类实现发布订阅模式。
+注意：
+\1. 同一名称事件可能有多个不同的执行函数
+\2. 通过"on"函数添加事件
+\3. 通过"emit"函数触发事件
+
+```
+19_发布订阅模式
+本题考点：设计模式
+
+根据题目要求，完成"EventEmitter"类实现发布订阅模式，考虑到同一名称事件可能有多个不同的执行函数，所以在构造函数中需要以对象的结构存放事件，核心步骤有：
+
+构造函数中创建”events“对象变量用于存放所有的事件
+添加”on“函数，用于订阅事件。当总事件中不存在此事件时创建新的事件数组，当存在时将”fn“函数添加在该事件对应数组中
+添加”emit“函数，用于发布事件，遍历该事件下的函数数组并全部执行
+参考答案：
+
+class EventEmitter {
+    constructor() {
+        this.events = {}
+    }
+    on(event, fn) {
+        if(!this.events[event]) {
+            this.events[event] = [fn]
+        } else {
+            this.events[event].push(fn)
+        }
+    }
+    emit(event) {
+        if(this.events[event]) {
+            this.events[event].forEach(callback => callback())
+        }
+    }
+}
+```
+
+### FED20 观察者模式
+
+#### 描述
+
+请补全JavaScript代码，完成"Observer"、"Observerd"类实现观察者模式。要求如下：
+\1. 被观察者构造函数需要包含"name"属性和"state"属性且"state"初始值为"走路"
+\2. 被观察者创建"setObserver"函数用于保存观察者们
+\3. 被观察者创建"setState"函数用于设置该观察者"state"并且通知所有观察者
+\4. 观察者创建"update"函数用于被观察者进行消息通知，该函数需要打印（console.log）数据，数据格式为：小明正在走路。其中"小明"为被观察者的"name"属性，"走路"为被观察者的"state"属性
+注意：
+\1. "Observer"为观察者，"Observerd"为被观察者
+
+```
+20_观察者模式
+本题考点：设计模式
+
+根据题目要求完成"Observer"、"Observerd"类实现观察者模式。核心步骤有：
+
+被观察者构造函数声明三个属性分别为"name"用于保存被观察者姓名、"state"用于保存被观察者状态、"observers"用于保存观察者们
+被观察者创建"setObserver"函数，该函数通过数组的push函数将观察者参数传入"observers"数组中
+被观察者创建"setState"函数，该函数首先通过参数修改被观察者的"state"属性，然后通过遍历"observers"数组分别调用各个观察者的"update"函数并且将该被观察者作为参数传入
+观察者创建"update"函数，用于打印信息
+参考答案：
+
+class Observerd {
+    constructor(name) {
+        this.name = name
+        this.state = '走路'
+        this.observers = []
+    }
+    setObserver(observer) {
+        this.observers.push(observer)
+    }
+    setState(state) {
+        this.state = state
+        this.observers.forEach(observer => observer.update(this))
+    }
+}
+class Observer {
+    constructor() {
+        
+    }
+    update(observerd) {
+        console.log(observerd.name + '正在' + observerd.state)
+    }
+}
+```
 
 
 
