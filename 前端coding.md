@@ -423,6 +423,33 @@ const _objectCreate = proto => {
 }
 ```
 
+### FED11 _call函数
+
+#### 描述
+
+请补全JavaScript代码，要求实现Function.call函数的功能且该新函数命名为"_call"。
+
+```
+题解 | #_call函数#
+11_Function.call
+本题考点：this
+
+根据题目要求，实现一个仿Function.call功能的"Function._call"函数，该函数会临时修改内部this的指向并返回结果，核心步骤有：
+
+参数默认为window
+获取调用该方法的对象，将this赋给对象参数，可以任意命名
+通过该对象参数临时调用函数并返回结果
+最后删除对象参数的临时函数属性
+参考答案：
+
+Function.prototype._call = function(target = window) {
+    target['fn'] = this
+    const result = target['fn']([...arguments].shift())
+    delete target['fn']
+    return result
+}
+```
+
 
 
 
