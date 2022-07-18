@@ -1619,9 +1619,9 @@ var exchange = function(nums) {
 方法一：顺序查找
 思路与算法
 
-最简单直接的方法即为顺序查找，假设当前链表的长度为 nn，则我们知道链表的倒数第 kk 个节点即为正数第 n - kn−k 个节点，此时我们只需要顺序遍历到链表的第 n - kn−k 个节点即为倒数第 kk 个节点。
+最简单直接的方法即为顺序查找，假设当前链表的长度为 n，则我们知道链表的倒数第 k 个节点即为正数第 n−k 个节点，此时我们只需要顺序遍历到链表的第 n−k 个节点即为倒数第 kk 个节点。
 
-我们首先求出链表的长度 nn，然后顺序遍历到链表的第 n - kn−k 个节点返回即可。
+我们首先求出链表的长度 n，然后顺序遍历到链表的第 n−k 个节点返回即可。
 
 Python3
 
@@ -1659,7 +1659,7 @@ var getKthFromEnd = function(head, k) {
 
 **复杂度分析**
 
--   时间复杂度：O*(*n*)，其中 *n* 为链表的长度。需要两次遍历。
+-   时间复杂度：O*(*n)，其中 *n* 为链表的长度。需要两次遍历。
 -   空间复杂度：*O*(1)。
 
 方法二：双指针
@@ -1689,13 +1689,26 @@ class Solution:
 js
 
 ```
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @param {number} k
+ * @return {ListNode}
+ */
 var getKthFromEnd = function(head, k) {
-    let fast = head, slow = head;
+    let fast = head,
+        slow = head;
     
-    while (fast && k > 0) {
+    while (fast && k > 0){
         [fast, k] = [fast.next, k - 1];
     }
-    while (fast) {
+    while (fast){
         [fast, slow] = [fast.next, slow.next];
     }
     return slow;
