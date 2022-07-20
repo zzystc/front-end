@@ -2109,3 +2109,208 @@ var mirrorTree = function(root) {
 
 空间复杂度：O(N)。使用的空间由递归栈的深度决定，它等于当前节点在二叉树中的高度。在平均情况下，二叉树的高度与节点个数为对数关系，即 O(logN)。而在最坏情况下，树形成链状，空间复杂度为 O(N)。
 
+#### [剑指 Offer 28. 对称的二叉树](https://leetcode.cn/problems/dui-cheng-de-er-cha-shu-lcof/)
+
+请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。
+
+例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
+
+`  1  / \ 2  2 / \ / \3  4 4  3`
+但是下面这个 [1,2,2,null,3,null,3] 则不是镜像对称的:
+
+```
+  1  / \ 2  2  \  \  3   3
+```
+
+**示例 1：**
+
+```
+输入：root = [1,2,2,3,4,4,3]
+输出：true
+```
+
+**示例 2：**
+
+```
+输入：root = [1,2,2,null,3,null,3]
+输出：false
+```
+
+**限制：**
+
+```
+0 <= 节点个数 <= 1000
+```
+
+注意：本题与主站 101 题相同：https://leetcode-cn.com/problems/symmetric-tree/
+
+方法一：递归
+思路和算法
+
+如果一个树的左子树与右子树镜像对称，那么这个树是对称的。
+
+![fig1](https://assets.leetcode-cn.com/solution-static/jianzhi_28/jianzhi_28_fig1.PNG)
+
+因此，该问题可以转化为：两个树在什么情况下互为镜像？
+
+如果同时满足下面的条件，两个树互为镜像：
+
+它们的两个根结点具有相同的值
+每个树的右子树都与另一个树的左子树镜像对称
+
+![fig2](https://assets.leetcode-cn.com/solution-static/jianzhi_28/jianzhi_28_fig2.PNG)
+
+
+我们可以实现这样一个递归函数，通过「同步移动」两个指针的方法来遍历这棵树，p 指针和 q 指针一开始都指向这棵树的根，随后 p 右移时，q 左移，p 左移时，q 右移。每次检查当前 p 和 q 节点的值是否相等，如果相等再判断左右子树是否对称。
+
+代码如下。
+
+ts
+
+```
+const check = (p: TreeNode | null, q: TreeNode | null): boolean => {
+    if (!p && !q) return true;
+    if (!p || !q) return false;
+    return p.val === q.val && check(p.left, q.right) && check(p.right, q.left);
+}
+var isSymmetric = function(root: TreeNode | null): boolean {
+    return check(root, root);
+};
+```
+
+复杂度分析
+
+假设树上一共 n 个节点。
+
+时间复杂度：这里遍历了这棵树，渐进时间复杂度为 O(n)。
+空间复杂度：这里的空间复杂度和递归使用的栈空间有关，这里递归层数不超过 n，故渐进空间复杂度为 O(n)。
+
+方法二：迭代
+思路和算法
+
+「方法一」中我们用递归的方法实现了对称性的判断，那么如何用迭代的方法实现呢？首先我们引入一个队列，这是把递归程序改写成迭代程序的常用方法。初始化时我们把根节点入队两次。每次提取两个结点并比较它们的值（队列中每两个连续的结点应该是相等的，而且它们的子树互为镜像），然后将两个结点的左右子结点按相反的顺序插入队列中。当队列为空时，或者我们检测到树不对称（即从队列中取出两个不相等的连续结点）时，该算法结束。
+
+ts
+
+```
+const check = (u: TreeNode | null, v: TreeNode | null): boolean => {
+    const q: (TreeNode | null)[] = [];
+    q.push(u),q.push(v);
+
+    while (q.length) {
+        u = q.shift()!;
+        v = q.shift()!;
+
+        if (!u && !v) continue;
+        if ((!u || !v) || (u.val !== v.val)) return false;
+
+        q.push(u.left); 
+        q.push(v.right);
+
+        q.push(u.right); 
+        q.push(v.left);
+    }
+    return true;
+}
+var isSymmetric = function(root: TreeNode | null): boolean {
+    return check(root, root);
+};
+```
+
+复杂度分析
+
+时间复杂度：O(n)，同「方法一」。
+空间复杂度：这里需要用一个队列来维护节点，每个节点最多进队一次，出队一次，队列中最多不会超过 nn 个点，故渐进空间复杂度为 O(n)。
+
+#### [剑指 Offer 29. 顺时针打印矩阵](https://leetcode.cn/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/)
+
+输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。
+
+**示例 1：**
+
+```
+输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+输出：[1,2,3,6,9,8,7,4,5]
+```
+
+**示例 2：**
+
+```
+输入：matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
+输出：[1,2,3,4,8,12,11,10,9,5,6,7]
+```
+
+**限制：**
+
+-   `0 <= matrix.length <= 100`
+-   `0 <= matrix[i].length <= 100`
+
+注意：本题与主站 54 题相同：https://leetcode-cn.com/problems/spiral-matrix/
+
+方法一：模拟
+可以模拟打印矩阵的路径。初始位置是矩阵的左上角，初始方向是向右，当路径超出界限或者进入之前访问过的位置时，顺时针旋转，进入下一个方向。
+
+判断路径是否进入之前访问过的位置需要使用一个与输入矩阵大小相同的辅助矩阵 visited，其中的每个元素表示该位置是否被访问过。当一个元素被访问时，将 visited 中的对应位置的元素设为已访问。
+
+如何判断路径是否结束？由于矩阵中的每个元素都被访问一次，因此路径的长度即为矩阵中的元素数量，当路径的长度达到矩阵中的元素数量时即为完整路径，将该路径返回。
+
+py3
+
+```
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        if not matrix or not matrix[0]:
+            return list()
+        
+        rows, columns = len(matrix), len(matrix[0])
+        visited = [[False] * columns for _ in range(rows)]
+        total = rows * columns
+        order = [0] * total
+
+        directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+        row, column = 0, 0
+        directionIndex = 0
+        for i in range(total):
+            order[i] = matrix[row][column]
+            visited[row][column] = True
+            nextRow, nextColumn = row + directions[directionIndex][0], column + directions[directionIndex][1]
+            if not (0 <= nextRow < rows and 0 <= nextColumn < columns and not visited[nextRow][nextColumn]):
+                directionIndex = (directionIndex + 1) % 4
+            row += directions[directionIndex][0]
+            column += directions[directionIndex][1]
+        return order
+```
+
+js
+
+```
+var spiralOrder = function(matrix) {
+    if (!matrix.length || !matrix[0].length) {
+        return [];
+    }
+    const rows = matrix.length, columns = matrix[0].length;
+    const visited = new Array(rows).fill(0).map(() => new Array(columns).fill(false));
+    const total = rows * columns;
+    const order = new Array(total).fill(0);
+
+    let directionIndex = 0, row = 0, column = 0;
+    const directions = [[0, 1], [1, 0], [0, -1], [-1, 0]];
+    for (let i = 0; i < total; i++) { 
+        order[i] = matrix[row][column];
+        visited[row][column] = true;
+        const nextRow = row + directions[directionIndex][0], nextColumn = column + directions[directionIndex][1];
+        if (!(0 <= nextRow && nextRow < rows && 0 <= nextColumn && nextColumn < columns && !(visited[nextRow][nextColumn]))) {
+            directionIndex = (directionIndex + 1) % 4;
+        }
+        row += directions[directionIndex][0];
+        column += directions[directionIndex][1];
+    }
+    return order;
+};
+```
+
+复杂度分析
+
+时间复杂度：O(mn)，其中 m 和 n 分别是输入矩阵的行数和列数。矩阵中的每个元素都要被访问一次。
+
+空间复杂度：O(mn)。需要创建一个大小为 m×n 的矩阵 visited 记录每个位置是否被访问过。
