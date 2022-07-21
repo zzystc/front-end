@@ -2314,3 +2314,90 @@ var spiralOrder = function(matrix) {
 时间复杂度：O(mn)，其中 m 和 n 分别是输入矩阵的行数和列数。矩阵中的每个元素都要被访问一次。
 
 空间复杂度：O(mn)。需要创建一个大小为 m×n 的矩阵 visited 记录每个位置是否被访问过。
+
+方法二：按层模拟
+可以将矩阵看成若干层，首先打印最外层的元素，其次打印次外层的元素，直到打印最内层的元素。
+
+定义矩阵的第 kk 层是到最近边界距离为 kk 的所有顶点。例如，下图矩阵最外层元素都是第 11 层，次外层元素都是第 22 层，剩下的元素都是第 33 层。
+
+$[[1, 1, 1, 1, 1, 1, 1],
+ [1, 2, 2, 2, 2, 2, 1],
+ [1, 2, 3, 3, 3, 2, 1],
+ [1, 2, 2, 2, 2, 2, 1],
+ [1, 1, 1, 1, 1, 1, 1]]$
+
+对于每层，从左上方开始以顺时针的顺序遍历所有元素。假设当前层的左上角位于 (top,left)，右下角位于(bottom,right)，按照如下顺序遍历当前层的元素。
+
+从左到右遍历上侧元素，依次为 (top,left) 到 (top,right)。
+
+从上到下遍历右侧元素，依次为(top+1,right) 到 (bottom,right)。
+
+如果 left<right 且 \textit{top} < top<bottom，则从右到左遍历下侧元素，依次为(bottom,right−1) 到(bottom,left+1)，以及从下到上遍历左侧元素，依次为 (bottom,left) 到 (top+1,left)。
+
+遍历完当前层的元素之后，将 left 和top 分别增加 11，将 right 和 bottom 分别减少 1，进入下一层继续遍历，直到遍历完所有元素为止。
+
+![fig1](https://assets.leetcode-cn.com/solution-static/jianzhi_29/jianzhi_29_fig1.png)
+
+py3
+
+```
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        if not matrix or not matrix[0]:
+            return list()
+        
+        rows, columns = len(matrix), len(matrix[0])
+        order = list()
+        left, right, top, bottom = 0, columns - 1, 0, rows - 1
+        while left <= right and top <= bottom:
+            for column in range(left, right + 1):
+                order.append(matrix[top][column])
+            for row in range(top + 1, bottom + 1):
+                order.append(matrix[row][right])
+            if left < right and top < bottom:
+                for column in range(right - 1, left, -1):
+                    order.append(matrix[bottom][column])
+                for row in range(bottom, top, -1):
+                    order.append(matrix[row][left])
+            left, right, top, bottom = left + 1, right - 1, top + 1, bottom - 1
+        return order
+```
+
+js
+
+```
+var spiralOrder = function(matrix) {
+    if (!matrix.length || !matrix[0].length) {
+        return [];
+    }
+
+    const rows = matrix.length, columns = matrix[0].length;
+    const order = [];
+    let left = 0, right = columns - 1, top = 0, bottom = rows - 1;
+    while (left <= right && top <= bottom) {
+        for (let column = left; column <= right; column++) {
+            order.push(matrix[top][column]);
+        }
+        for (let row = top + 1; row <= bottom; row++) {
+            order.push(matrix[row][right]);
+        }
+        if (left < right && top < bottom) {
+            for (let column = right - 1; column > left; column--) {
+                order.push(matrix[bottom][column]);
+            }
+            for (let row = bottom; row > top; row--) {
+                order.push(matrix[row][left]);
+            }
+        }
+        [left, right, top, bottom] = [left + 1, right - 1, top + 1, bottom - 1];
+    }
+    return order;
+};
+```
+
+复杂度分析
+
+时间复杂度：O(mn)，其中 m 和 n 分别是输入矩阵的行数和列数。矩阵中的每个元素都要被访问一次。
+
+空间复杂度：O(1)。除了输出数组以外，空间复杂度是常数。
+
