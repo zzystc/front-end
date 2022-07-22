@@ -2560,3 +2560,63 @@ var validateStackSequences = function(pushed, popped) {
 };
 ```
 
+#### [剑指 Offer 32 - I. 从上到下打印二叉树](https://leetcode.cn/problems/cong-shang-dao-xia-da-yin-er-cha-shu-lcof/)
+
+从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。 
+
+例如:
+给定二叉树: `[3,9,20,null,null,15,7]`,
+
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+
+返回：
+
+```
+[3,9,20,15,7] 
+```
+
+**提示：**
+
+1.  `节点总数 <= 1000`
+
+BFS
+BFS层层遍历
+要用一个队列来记录，先进先出
+
+```
+var levelOrder = function(root) {
+    //存储结果
+    const res = [];
+    //判断是否为空
+    if(root == null){
+        return res
+    }
+    //声明一个队列
+    const queue = [];
+    queue.push(root);
+
+    while(queue.length>0){
+        //队列：先进先出，拿到第一个值，也就是root。
+        //此时queue.为空
+        let vertex = queue.shift();
+        //把vertex.val值添加到res
+        res.push(vertex.val);
+        //判断左右边是否有值
+        if(vertex.left){
+            queue.push(vertex.left)
+        }
+        if(vertex.right){
+            queue.push(vertex.right)
+        }
+    }
+    return res
+};
+
+```
+
