@@ -2590,6 +2590,17 @@ BFS层层遍历
 要用一个队列来记录，先进先出
 
 ```
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
 var levelOrder = function(root) {
     //存储结果
     const res = [];
