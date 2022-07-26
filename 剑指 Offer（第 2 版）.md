@@ -2719,3 +2719,94 @@ var levelOrder = function(root) {
 时间复杂度：每个点进队出队各一次，故渐进时间复杂度为 O(n)。
 空间复杂度：队列中元素的个数不超过 n 个，故渐进空间复杂度为 O(n)。
 
+#### [剑指 Offer 32 - III. 从上到下打印二叉树 III](https://leetcode.cn/problems/cong-shang-dao-xia-da-yin-er-cha-shu-iii-lcof/)
+
+请实现一个函数按照之字形顺序打印二叉树，即第一行按照从左到右的顺序打印，第二层按照从右到左的顺序打印，第三行再按照从左到右的顺序打印，其他行以此类推。
+
+例如:
+给定二叉树: `[3,9,20,null,null,15,7]`,
+
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+
+返回其层次遍历结果：
+
+```
+[
+  [3],
+  [20,9],
+  [15,7]
+] 
+```
+
+**提示：**
+
+1.  `节点总数 <= 1000`
+
+方法一：广度优先遍历
+此题是「剑指 Offer 32 - II. 从上到下打印二叉树 II」的变种，最后输出的要求有所变化，要求我们按层数的奇偶来决定每一层的输出顺序。规定二叉树的根节点为第 0 层，如果当前层数是偶数，从左至右输出当前层的节点值，否则，从右至左输出当前层的节点值。
+
+我们依然可以沿用「剑指 Offer 32 - II」的思想，修改广度优先搜索，对树进行逐层遍历，用队列维护当前层的所有元素，当队列不为空的时候，求得当前队列的长度 size，每次从队列中取出 size 个元素进行拓展，然后进行下一次迭代。
+
+为了满足题目要求的返回值为「先从左往右，再从右往左」交替输出的锯齿形，我们可以利用「双端队列」的数据结构来维护当前层节点值输出的顺序。
+
+双端队列是一个可以在队列任意一端插入元素的队列。在广度优先搜索遍历当前层节点拓展下一层节点的时候我们仍然从左往右按顺序拓展，但是对当前层节点的存储我们维护一个变量 isOrderLeft 记录是从左至右还是从右至左的：
+
+如果从左至右，我们每次将被遍历到的元素插入至双端队列的末尾。
+
+如果从右至左，我们每次将被遍历到的元素插入至双端队列的头部。
+
+当遍历结束的时候我们就得到了答案数组。
+
+![img](https://assets.leetcode-cn.com/solution-static/jianzhi_32_III/1.png)
+
+js
+
+```
+var zigzagLevelOrder = function(root) {
+    if (!root) {
+        return [];
+    }
+
+    const ans = [];
+    const nodeQueue = [root];
+
+    let isOrderLeft = true;
+
+    while (nodeQueue.length) {
+        let levelList = [];
+        const size = nodeQueue.length;
+        for (let i = 0; i < size; ++i) {
+            const node = nodeQueue.shift();
+            if (isOrderLeft) {
+                levelList.push(node.val);
+            } else {
+                levelList.unshift(node.val);
+            }
+            if (node.left !== null) {
+                nodeQueue.push(node.left);
+            }
+            if (node.right !== null) {
+                nodeQueue.push(node.right);
+            }
+        }            
+        ans.push(levelList);
+        isOrderLeft = !isOrderLeft;
+    }
+
+    return ans;
+};
+
+```
+
+复杂度分析
+
+时间复杂度：O(N)，其中 NN 为二叉树的节点数。每个节点会且仅会被遍历一次。
+
+空间复杂度：O(N)。我们需要维护存储节点的队列和存储节点值的双端队列，空间复杂度为 O(N)。
+
