@@ -3144,6 +3144,19 @@ var pathSum = function(root, sum) {
 js
 
 ```
+/**
+ * // Definition for a Node.
+ * function Node(val, next, random) {
+ *    this.val = val;
+ *    this.next = next;
+ *    this.random = random;
+ * };
+ */
+
+/**
+ * @param {Node} head
+ * @return {Node}
+ */
 var copyRandomList = function(head, cachedNode = new Map()) {
     if (head === null) {
         return null;
@@ -3186,6 +3199,19 @@ var copyRandomList = function(head, cachedNode = new Map()) {
 js
 
 ```
+/**
+ * // Definition for a Node.
+ * function Node(val, next, random) {
+ *    this.val = val;
+ *    this.next = next;
+ *    this.random = random;
+ * };
+ */
+
+/**
+ * @param {Node} head
+ * @return {Node}
+ */
 var copyRandomList = function(head) {
     if (head === null) {
         return null;
