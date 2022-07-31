@@ -2968,7 +2968,7 @@ Python3
             
             dfs(root, target)
             return ret
-    
+
 复杂度分析
 
 时间复杂度：O(N^2)，其中 N 是树的节点数。在最坏情况下，树的上半部分为链状，下半部分为完全二叉树，并且从根节点到每一个叶子节点的路径都符合题目要求。此时，路径的数目为 O(N)，并且每一条路径的节点个数也为 O(N)，因此要将这些路径全部添加进答案中，时间复杂度为 O(N^2)。
@@ -3022,8 +3022,9 @@ Python3
                         que_total.append(rec)
     
             return ret
-    
-    
+
+
+​    
 复杂度分析
 
 时间复杂度：O(N^2)，其中 N 是树的节点数。分析思路与方法一相同。
@@ -3241,3 +3242,30 @@ var copyRandomList = function(head) {
 读者们也可以自行尝试在计算拷贝节点的随机指针的同时计算其后继指针，这样只需要遍历两次。
 空间复杂度：O(1)。注意返回值不计入空间复杂度。
 
+#### [剑指 Offer 36. 二叉搜索树与双向链表](https://leetcode.cn/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/)
+
+输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的循环双向链表。要求不能创建任何新的节点，只能调整树中节点指针的指向。
+
+为了让您更好地理解问题，以下面的二叉搜索树为例：
+
+ 
+
+![img](https://assets.leetcode.com/uploads/2018/10/12/bstdlloriginalbst.png)
+
+ 
+
+我们希望将这个二叉搜索树转化为双向循环链表。链表中的每个节点都有一个前驱和后继指针。对于双向循环链表，第一个节点的前驱是最后一个节点，最后一个节点的后继是第一个节点。
+
+下图展示了上面的二叉搜索树转化成的链表。“head” 表示指向链表中有最小元素的节点。
+
+ 
+
+![img](https://assets.leetcode.com/uploads/2018/10/12/bstdllreturndll.png)
+
+ 
+
+特别地，我们希望可以就地完成转换操作。当转化完成以后，树中节点的左指针需要指向前驱，树中节点的右指针需要指向后继。还需要返回链表中的第一个节点的指针。
+
+**注意：**本题与主站 426 题相同：https://leetcode-cn.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/
+
+**注意：**此题对比原题有改动。
