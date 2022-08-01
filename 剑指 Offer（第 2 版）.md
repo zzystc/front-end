@@ -3269,3 +3269,49 @@ var copyRandomList = function(head) {
 **注意：**本题与主站 426 题相同：https://leetcode-cn.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/
 
 **注意：**此题对比原题有改动。
+
+```
+用两个变量，prev和head记住位置
+最后prev已经是最后一个元素
+最后将prev.right = head head.left = prev
+
+var treeToDoublyList = function(root) {
+    /*
+    1. 中序遍历是 排序的
+    2.
+
+    */
+    if(!root){
+        return null;
+    }
+    let prev = null;
+    let head =null;
+    function dfsHelper(root){
+        if(!root){
+            return null;
+        }
+        dfsHelper(root.left);
+        /*
+            中序(left,cur,right)
+        */
+        //说明是第一个节点
+        if(!head){
+            head = new Node(root.val);
+            prev = head;
+        } else {
+            let newNode = new Node(root.val);
+            prev.right = newNode;
+            newNode.left = prev;
+            prev = newNode;
+        }
+        dfsHelper(root.right);
+
+    }
+    dfsHelper(root);
+    //prev是最后一个节点
+    head.left = prev;
+    prev.right = head;
+    return head;
+};
+```
+
