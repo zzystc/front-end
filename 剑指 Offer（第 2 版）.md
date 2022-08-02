@@ -3684,3 +3684,87 @@ var permutation = function(s) {
  
 
 注意：本题与主站 169 题相同：https://leetcode-cn.com/problems/majority-element/
+
+```
+一种是哈希表，将每个元素出现的次数存在哈希表，最后遍历哈希表次数大于n/2
+一种是排序，我用的是快速排序, 因为是众数长度超过一半了，有序时 nums[num.lengt-1/2] 一定是众数
+
+
+var majorityElement = function(nums) {
+    if(!nums||!nums.length){
+        return null;
+    }
+    /*
+        1. 快速排序
+        2. n/2的位置就是
+    */
+ quickSort(nums,0,nums.length-1);
+ return nums[Math.floor((nums.length-1) /2)];
+};
+
+function quickSort(nums,lo,hi){
+    if(lo>=hi){
+        return ;
+    }
+    let i = partiton(nums,lo,hi);
+    //已经是i 左边小，右边大了
+    quickSort(nums,lo,i-1);
+    quickSort(nums,i+1,hi);
+}
+
+function partiton(nums,lo,hi){
+    let pivot = nums[lo];//最左边元素
+    let i = lo + 1;//因为最左边元素是pivot
+    let j = hi; //是闭区间，都得包括，最后 i大于j了，
+    while(i<=j){
+        while(nums[i] < pivot && i<=j){
+            i++;
+        }
+
+        while(nums[j] > pivot && i<=j){
+            j--;
+        }
+        //这里需要检查i和j,每个有ij变化的地方都需要检查
+        if(i<=j){
+            let temp = nums[i];
+            nums[i] = nums[j];
+            nums[j] =temp;
+            i++;
+            j--;
+        }
+        //因为 i==j
+    }
+    /*
+    让nums[lo]和nums[j]互换
+    */
+    nums[lo] = nums[j];
+    nums[j] = pivot;
+    return j;
+}
+
+
+/*
+    哈希表
+*/
+// var majorityElement = function(nums) {
+//     if(!nums||!nums.length){
+//         return null;
+//     }
+//     let map = new Map();
+//     for(let i = 0;i<nums.length;i++){
+//         let cur = nums[i];
+//         if(map.has(cur)){
+//             map.set(cur,map.get(cur) + 1);
+//         } else {
+//             map.set(cur,1);
+//         }
+//     }
+//     let mid = nums.length >> 1;
+//     for( [key,value] of map){
+//         if(value > mid){
+//             return key;
+//         }
+//     }
+// };
+```
+
