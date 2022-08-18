@@ -136,21 +136,108 @@
 
 
 
+FED9 CSS选择器——标签、类、ID选择器
+
+入门 通过率：47.84% 时间限制：3秒 空间限制：256M
+
+描述
+
+请将html模块中字体内容是"红色"的字体颜色设置为"rgb(255, 0, 0)"，"绿色"设置为"rgb(0, 128, 0)"，"黑色"设置为"rgb(0, 0, 0)"，且字体大小都为20px。
+
+```
+<html>
+    <head>
+        <meta charset=utf-8>
+        <style type="text/css">
+            /*补全代码*/
+            /*补全代码*/
+            div{
+                font-size:20px;
+                color:rgb(255,0,0);
+            }
+            .green{
+                color:rgb(0, 128, 0)
+            }
+            #black{
+                color:rgb(0, 0, 0)
+            }
+            /*此处按照题意为改动任何html代码 */
+            /*font-size 设置字体大小，color设置颜色加入rgb就等于设置了颜色的rgb值 */
+            /*div是内置标签所以找到标签定义的时候不需要加入任何东西，class定义的类名要定义需要使用
+            一个.来找到，定义id时需要使用#号*/
+        </style>
+    </head>
+    <body>
+        <div>红色</div>
+        <div class='green'>绿色</div>
+        <div id='black'>黑色</div>
+    </body>
+</html>
+```
 
 
 
+#### FED10 CSS选择器——伪类选择器
+
+简单 通过率：61.40% 时间限制：3秒 空间限制：256M
+
+描述
+
+请将html模块中ul列表的第2个li标签和第4个li标签的背景颜色设置成"rgb(255, 0, 0)"。
+
+```
+<html>
+    <head>
+        <meta charset=utf-8>
+        <style type="text/css">
+            /*补全代码*/
+            li:nth-child(even) {
+                background-color: rgb(255, 0, 0);
+            }
+        </style>
+    </head>
+    <body>
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+    </body>
+</html>
+```
 
 
 
+#### FED11 CSS选择器——伪元素
 
+简单 通过率：38.06% 时间限制：3秒 空间限制：256M
 
+描述
 
+请给html模块的div元素加一个后伪元素，且后伪元素的宽度和高度都是20px，背景颜色为"rgb(255, 0, 0)"。
 
+```
+<html>
+    <head>
+      <meta charset=utf-8>
+      <style type="text/css">
+        /*补全代码*/
+        div::after{
+          content:"";
+          width: 20px;
+          height: 20px;
+          background-color: rgb(255,0,0);
+          display: block;
+        }
+      </style>
+    </head>
+    <body>
+        <div></div>
+    </body>
+</html>
 
-
-
-
-
+```
 
 
 
