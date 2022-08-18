@@ -438,13 +438,36 @@ FED9 CSS选择器——标签、类、ID选择器
 
 
 
+#### FED20 基本数据类型检测
 
+中等 通过率：51.84% 时间限制：3秒 空间限制：256M
 
+描述
 
+请补全JavaScript函数，要求以字符串的形式返回参数的类型。
+注意：只需检测基本数据类型。
 
+```
+function _typeof(value) {
+    // 补全代码
+    return Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
+}
+```
 
+#### FED21 检测复杂数据类型
 
+中等 通过率：62.97% 时间限制：3秒 空间限制：256M
 
+描述
+
+请补全JavaScript函数，要求以Boolean的形式返回第一个参数是否属于第二个参数对象的实例。
+
+```
+function _instanceof(left,right) {
+    // 补全代码
+    return Boolean(left instanceof right)
+}
+```
 
 
 
