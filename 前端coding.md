@@ -251,6 +251,26 @@ FED9 CSS选择器——标签、类、ID选择器
 \2. 圆角属性单位请使用px
 注意：由于圆角属性设置广泛且都可以实现题目效果，所以请按照要求规范书写。
 
+```
+<html>
+    <head>
+        <meta charset=utf-8>
+        <style type="text/css">
+            /*补全代码*/
+            div {
+                width: 100px;
+                height: 100px;
+                border-radius: 50px;
+                border: 1px solid black;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div></div>
+    </body>
+</html>
+```
 
 
 
