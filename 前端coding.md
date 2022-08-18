@@ -688,6 +688,581 @@ function _numbertoobject(number) {
 }
 ```
 
+#### FED33 对象字符串
+
+中等 通过率：86.60% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求将字符串参数转换为对象的形式返回。
+示例：
+`\1. typeof string === 'string' -> typeof _stringtoobject(string) === 'object'`
+
+```
+function _stringtoobject(string) {
+    // 补全代码
+    return new String(string)
+}
+```
+
+#### FED34 去除字符串两端空格
+
+中等 通过率：69.65% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求去除参数字符串两端的空格并返回。
+
+```
+function _trim(string) {
+    // 补全代码
+    return  string.trim()
+    // return string.replace(/^\s*|\s*$/g,'')
+}
+```
+
+
+
+#### FED35 输出日期
+
+中等 通过率：36.06% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求以字符串的形式输出时间戳参数所对应的"年-月-日"。
+示例：
+\1. _date(1631159776311) -> '2021-9-9'
+
+```
+function _date(number) {
+    // 补全代码
+     let date = new Date(number);
+  return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+}
+```
+
+
+
+#### FED36 数字取整
+
+中等 通过率：65.42% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求返回数字参数的整数部分。
+
+```
+function _int(value) {
+    // 补全代码
+    return (parseInt(value));
+}
+```
+
+#### FED37 数组反转
+
+中等 通过率：67.18% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求将参数数组反转之后返回。
+
+```
+function _reverse(array) {
+    // 补全代码
+    let arr = [];
+    for(let x = array.length - 1;x >= 0;x--){
+        arr.push(array[x]);
+    }
+    return arr
+}
+```
+
+#### FED38 数组转字符串
+
+中等 通过率：53.43% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求将参数数组转换为字符串输出。
+示例：
+\1. _join([1,'2',3]) -> "123"
+注意：只需考虑一维数组且数据类型为原始数据类型。
+
+```
+function _join(array) {
+    // 补全代码
+    let str='';
+    for(let i=0;i<array.length;i++)
+        {
+            str+=array[i];
+        }
+    return str;
+}
+```
+
+#### FED39 数组最大值
+
+中等 通过率：51.47% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求找到数组参数中的最大值并返回。
+注意：数组中只包含数字。
+
+```
+function _max(array) {
+    // 补全代码
+    return array.reduce((acc, cur)=>{
+        if( acc < cur){
+            acc = cur;
+        }
+        return acc;
+    }, -Infinity)
+}
+```
+
+
+
+#### FED40 搜索数字
+
+描述
+
+请补全JavaScript函数，要求以boolean的形式返回字符串参数中是否包含数字。
+
+```
+function _search(string) {
+    var reg=/\d+/
+    return reg.test(string)  
+}
+
+
+function _search(string) {
+    // 补全代码
+    //return [..string].find(c => Number(c) === 0 ? false : true);
+    return string.search(/[0-9]/) >= 0 ? true : false;
+}
+```
+
+#### FED41 头部插入元素
+
+中等 通过率：60.92% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求将第二个参数插入第一个参数数组的头部，并且以数组的形式返回。
+
+```
+function _unshift(array,value) {
+    // 补全代码
+    for(var i=array.length;i>0;i--){
+        array[i]=array[i-1];
+    }
+    array[0]=value;
+    return array;
+}
+```
+
+#### FED42 尾部插入元素
+
+中等 通过率：80.67% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求将第二个参数插入第一个参数数组的尾部，并且以数组的形式返回。
+
+```
+function _push(array,value) {
+    // 补全代码
+    array[array.length]=value
+    return array
+    
+}
+```
+
+#### FED43 js-位置查找
+
+中等 通过率：54.52% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求以数字的形式返回第一个参数数组中第二个参数所在的首个索引值。
+注意：如果数组中不存在目标值，则返回-1。
+
+
+
+```
+function _indexof(array,value) {
+    // 补全代码
+    return array.reduce((p,c,i) => p<0&&c===value? i:p, -1)
+}
+```
+
+
+
+#### FED44 向下取整
+
+中等 通过率：78.96% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求以数字的形式返回数字参数向下取整的结果。
+
+```
+function _floor(number) {
+    // 补全代码
+    let value = number - parseInt(number) > 0
+    return  parseInt(number)   
+}
+```
+
+#### FED45 整数反转
+
+中等 通过率：32.17% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求将整数参数反转之后输出。
+示例：
+\1. _reverse(0) -> 0
+\2. _reverse(233) -> 332
+\3. _reverse(-223) -> -322
+
+```
+function _reverse(number) {
+    // 补全代码
+    if(number<0){
+        return String(Math.abs(number)).split('').reverse().join('')*-1;
+    }else{
+       return String(Math.abs(number)).split('').reverse().join('')*1
+    }
+}
+```
+
+
+
+#### FED46 字符串搜索
+
+中等 通过率：59.99% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求以boolean的形式返回字符串首参中是否包含第二个参数。
+
+```
+function _search(string,value) {
+    // 补全代码
+    return string.indexOf(value)===-1?false:true
+}
+```
+
+#### FED47 函数——参数对象
+
+中等 通过率：77.40% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求返回它的参数伪数组对象。
+
+```
+function getArguments (a,b,c) {
+    // 补充代码
+    return {'0': a, '1': b, '2':c, length:3};
+    // return arguments;
+}
+```
+
+
+
+#### FED48 this指向
+
+中等 通过率：75.60% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，使obj对象中fn函数返回该对象中a属性和b属性的和。
+
+```
+var obj = {
+    a: 1,
+    b: 2,
+    fn: function(){
+        // 补全代码
+        return this.a+this.b
+    }
+}
+```
+
+
+
+#### FED49 JS动态创建节点
+
+中等 通过率：31.67% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，根据参数数组创建li元素。
+要求：
+\1. li元素的个数和数组的长度一样
+\2. li元素的内容是数组中的每个元素
+\3. 将创建的所有li元素插入到ul中
+
+```
+<html>
+    <head>
+        <meta charset=utf-8>
+    </head>
+    <body>
+        <ul></ul>
+    </body>
+    <script type="text/javascript">
+        function createLi(array) {
+            var ul = document.querySelector('ul')
+            for(let i=0 ; i<array.length ; i++) {
+                let li = document.createElement('li')
+                li.innerHTML = array[i]
+                ul.appendChild(li)
+            }
+        }
+
+    </script>
+</html>
+```
+
+#### FED50 根据ID获取元素
+
+中等 通过率：53.74% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，根据id获取html模块中ul标签下第二个li元素并返回。
+
+```
+function getLI(id){
+    // 补全代码
+    let bb = document.getElementById(id);
+}
+```
+
+
+
+#### FED51 JS修改元素内容
+
+中等 通过率：39.55% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，将类为"box"的div元素内容修改为"欢迎来到牛客网"。
+
+```
+<html>
+    <head>
+        <meta charset=utf-8>
+    </head>
+    <body>
+        <div class='box'></div>
+    </body>
+    <script type="text/javascript">
+        function modifyText(){
+            // 补全代码
+            let div  = document.getElementsByClassName('box')[0];
+            div.textContent='欢迎来到牛客网';
+        }
+    </script>
+</html>
+```
+
+#### FED52 阻止冒泡事件
+
+中等 通过率：43.84% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求在点击li元素的时候不触发ul的事件。
+注意：需要自行获取li元素。
+
+```
+<html>
+    <head>
+        <meta charset=utf-8>
+    </head>
+    <body>
+        <ul>
+            <li>nowcoder</li>
+        </ul>
+    </body>
+    <script type="text/javascript">
+        // 补全代码
+        var li = document.querySelector('li');
+        li.onclick=function(e){
+            e=window.event|| e;
+            if(e){
+                e.cancelBubble=true;
+            }else{
+                  e.stopPropagation();
+            }
+        }
+        
+    </script>
+</html>
+```
+
+
+
+#### FED53 阻止默认事件
+
+中等 通过率：47.00% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求在点击id为"checkbox"的复选框时不会取消勾选状态。
+注意：需要自行获取input元素。
+
+```
+<html>
+    <head>
+        <meta charset=utf-8>
+    </head>
+    <body>
+        <form>
+            <label>牛客会陪伴大家</label>
+            <input id="checkbox" type="checkbox" checked />
+        </form>
+    </body>
+    <script type="text/javascript">
+        // 补全代码
+       let cbox=document.getElementById('checkbox')
+        cbox.addEventListener('click',(e)=>{
+            e.preventDefault()
+        })
+    </script>
+</html>
+```
+
+
+
+#### FED54 url地址
+
+中等 通过率：74.62% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，实现一个函数返回页面当前url。
+
+```
+function getUrlHref (){
+    // 补全代码
+    return location.href;
+}
+```
+
+
+
+#### FED55 点击按钮隐藏元素
+
+较难 通过率：28.95% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript代码，实现一个盒子的关闭按钮功能。
+要求：
+\1. 使类为"btn"的div元素中心点定位在类为"box"的div元素右上顶点
+\2. 使类为"btn"的div元素中内容"X"垂直水平居中
+\3. 点击"X"按钮可以使类为"box"的div元素隐藏
+
+```
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset=utf-8>
+        <style type="text/css">
+            .box {
+                width: 100px;
+                height: 100px;
+                border: solid 1px black;
+                /*补全代码*/
+                position:relative;
+            }
+            .btn{
+                width: 20px;
+                height: 20px;
+                background-color: red;
+                /*补全代码*/
+                position:absolute;
+                right:-10px;
+                top:-10px;
+                text-align:center;
+                line-height:20px;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div class='box'>
+            <div class='btn'>X</div>
+        </div>
+
+        <script type="text/javascript">
+            var btn = document.querySelector('.btn');
+            var box = document.querySelector('.box');
+            btn.onclick = function(){
+                // 补全代码
+                box.style.display = "none"
+            }
+        </script>
+    </body>
+</html>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -718,7 +1293,7 @@ function _numbertoobject(number) {
 
 ### FED1 事件委托
 
-#### 描述
+描述
 
 描述请补全JavaScript代码，要求如下：
 \1. 给"ul"标签添加点击事件
