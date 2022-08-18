@@ -1,3 +1,27 @@
+# 零基础入门前端
+
+### 01HTML
+
+#### FED1 表单类型
+
+入门 通过率：55.40% 时间限制：3秒 空间限制：256M
+
+## 描述
+
+请依次写出以下类型的输入框。
+\1. 类型为密码，默认值为"nowcoder"
+\2. 类型为复选框，且状态为已勾选
+
+```
+<form>
+	<!-- 补全代码 -->
+	<input type="password" value="nowcoder">
+	<input type="checkbox" checked>
+</form>
+```
+
+
+
 # 前端面试手撕题
 
 ### FED1 事件委托
