@@ -349,6 +349,119 @@ FED9 CSS选择器——标签、类、ID选择器
 </html>
 ```
 
+#### FED15 固定定位
+
+中等 通过率：57.59% 时间限制：3秒 空间限制：256M
+
+描述
+
+请将html模块类为"box"的div元素固定在视口的左上角。
+
+```
+<html>
+    <head>
+        <meta charset=utf-8>
+        <style type="text/css">
+            .box {
+                width: 100px;
+                height: 100px;
+                /*补全代码*/
+                border:1px solid black;
+                position:fixed;
+                left:0;
+                top:0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class='box'></div>
+    </body>
+</html>
+```
+
+
+
+#### FED18 CSS单位（一）
+
+简单 通过率：71.20% 时间限制：3秒 空间限制：256M
+
+描述
+
+请将html模块中类为"box"的div元素的宽度和高度设置为自身字体大小的4倍。
+
+```
+<html>
+    <head>
+        <meta charset=utf-8>
+        <style type="text/css">
+            .box {
+                width: 4em;
+                height: 4em;
+                /*补全代码*/
+                
+            }
+        </style>
+    </head>
+    <body>
+        <div class='box'>牛客网</div>
+    </body>
+</html>
+```
+
+
+
+#### FED19 CSS单位（二）
+
+简单 通过率：89.41% 时间限制：3秒 空间限制：256M
+
+描述
+
+请将html模块div元素的宽度和高度设置为html根元素字体大小的4倍。
+注意：只需在css模块补全样式内容，请勿修改html模块。
+
+```
+<html>
+    <head>
+        <meta charset=utf-8>
+        <style type="text/css">
+            div {
+                /*补全代码*/
+                width:4rem; height:4rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div></div>
+    </body>
+</html>s
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
