@@ -513,51 +513,180 @@ function _factorial(number) {
 
 
 
+#### FED24 绝对值
+
+中等 通过率：76.41% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求返回数字参数的绝对值。
+
+```
+function _abs(number) {
+    // 补全代码
+    return number >= 0 ? number : -number;
+}
+```
 
 
 
+#### FED25 幂
+
+中等 通过率：59.86% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求返回底数为第一个参数，幂为第二个参数的数值。
+
+```
+function _pow(number,power) {
+    // 补全代码
+    let num=number;
+    for(let a=2;a<=power;a++){
+        num*=number;
+    }
+    return num;
+}
+```
 
 
 
+#### FED26 平方根
+
+中等 通过率：73.86% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求返回数字参数的平方根。
+
+```
+function _sqrt(number) {
+    // 补全代码
+    if(number === 1 || number === 0) return number;   
+    var low = 0;  
+    var high = number;  
+    while(low < high){       
+        var p = (low + high)>>1;       
+        if( p * p === number)           
+            return p;     
+        else if(p * p < number)          
+            low = p;       
+        else         
+            high = p; 
+    }
+}
+```
+
+#### FED27 余数
+
+中等 通过率：81.28% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求返回数字参数除以2的余数。
+
+```
+function _remainder(value) {
+    // 补全代码
+    return value % 2    //对2取余数
+}
+```
 
 
 
+#### FED28 返回星期数
+
+中等 通过率：39.85% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求以字符串的形式返回数字参数所对应的星期。
+示例：
+\1. _getday(1) -> "星期一"
+\2. _getday(7) -> "星期天"
+
+```
+function _getday(value) {
+    // 补全代码
+    let arr = ['天', '一', '二', '三', '四', '五', '六'] ;
+    return `星期${arr[value % 7]}`
+}
+```
 
 
 
+#### FED29 从大到小排序
+
+中等 通过率：37.54% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求将数组参数中的数字从大到小进行排序并返回。
+
+```
+function _sort(array) {
+    // 补全代码
+    return array.sort((x, y)=>{
+        return y-x
+    })
+}
+```
 
 
 
+#### FED30 大写字符串
 
+中等 通过率：66.62% 时间限制：3秒 空间限制：256M
 
+描述
 
+请补全JavaScript函数，要求将字符串参数转换为大写字符串并返回。
 
+```
+function _touppercase(string) {
+    // 补全代码
+     return string.toUpperCase();
+}
+```
 
+#### FED31 对象属性键名
 
+中等 通过率：60.43% 时间限制：3秒 空间限制：256M
 
+描述
 
+请补全JavaScript函数，要求以数组的形式输出对象各个属性的键名。
+示例：
+\1. _keys({name:'nowcoder',age:7}) -> ['name','age']
+注意：只需考虑对象属性均为原始数据类型的情况。
 
+```
+function _keys(object) {
+    // 补全代码
+    let arr=[];
+    for(let i in object){
+        arr.push(i)
+    }
+    return arr
+}
+```
 
+#### FED32 对象数字
 
+中等 通过率：75.38% 时间限制：3秒 空间限制：256M
 
+描述
 
+请补全JavaScript函数，要求将数字参数转换为对象的形式返回。
+示例：
+``\1. typeof number === 'number' -> typeof _numbertoobject(number) === 'object'``
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```
+function _numbertoobject(number) {
+    // 补全代码
+    return {number}
+}
+```
 
 
 
