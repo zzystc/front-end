@@ -274,13 +274,80 @@ FED9 CSS选择器——标签、类、ID选择器
 
 
 
+#### FED13 设置盒子宽高
 
+中等 通过率：72.58% 时间限制：3秒 空间限制：256M
 
+描述
 
+请将html模块类为"box"的div元素宽度和高度都设置为100px，且内间距为20px、外间距为10px。
 
+```
+<html>
+    <head>
+        <meta charset=utf-8>
+        <style type="text/css">
+            /*补全代码*/
+            div.box{
+                width:100px;
+                height:100px;
+                background:red;
+                padding:20px;
+                margin:10px;
+            }
 
+        </style>
+    </head>
+    <body>
+        <div class="box">
+        </div>
+    </body>
+</html>
+```
 
+#### FED14 浮动和清除浮动
 
+简单 通过率：46.92% 时间限制：3秒 空间限制：256M
+
+描述
+
+请将类为"left"的div元素和类为"right"的div元素在同一行上向左浮动，且清除类为"wrap"的父级div元素内部的浮动。
+
+```
+<html>
+    <head>
+        <meta charset=utf-8>
+        <style type="text/css">
+            .wrap::after{
+                /*补全代码*/
+               content:'';
+                display:block;
+                clear:both;
+            }
+             .left {
+                width: 100px;
+                height: 100px;
+                /*补全代码*/
+                 display:block;
+                 float:left;
+            }
+             .right {
+                width: 100px;
+                height: 100px;
+                /*补全代码*/
+                display:block;
+                  float:left;
+            }
+        </style>
+    </head>
+    <body>
+        <div class='wrap'>
+            <div class='left'></div>
+            <div class='right'></div>
+        </div>
+    </body>
+</html>
+```
 
 
 
