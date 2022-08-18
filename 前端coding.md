@@ -471,6 +471,98 @@ function _instanceof(left,right) {
 
 
 
+#### FED22 数据类型转换
+
+中等 通过率：56.44% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求以字符串的形式返回两个数字参数的拼接结果。
+示例：
+\1. _splice(223,233) -> "223233"
+\2. _splice(-223,-233) -> "-223-233"
+
+```
+function _splice(left,right) {
+    // 补全代码
+    return (right).toString()+(left).toString();
+}
+```
+
+
+
+#### FED23 阶乘
+
+中等 通过率：48.06% 时间限制：3秒 空间限制：256M
+
+描述
+
+请补全JavaScript函数，要求返回数字参数的阶乘。
+注意：参数为大于等于0的整数。
+
+```
+function _factorial(number) {
+    // 补全代码
+    var  sum= 1 ;
+    for(let i = 1;i<=number;i++){
+        sum *= i
+    }
+    return sum
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
