@@ -20,6 +20,35 @@
 </form>
 ```
 
+### FED2 表格结构
+
+入门 通过率：43.68% 时间限制：3秒 空间限制：256M
+
+## 描述
+
+请写出具有表格标题为"nowcoder"的2行3列表格结构。
+
+```
+<table border="1" width=100%>
+    <!-- 补全代码 -->
+    <caption>nowcoder</caption>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+```
+
+
+
+
+
 
 
 # 前端面试手撕题
